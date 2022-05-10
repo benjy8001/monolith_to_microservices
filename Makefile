@@ -7,7 +7,7 @@ endif
 
 DOCKER_COMPOSE  = docker-compose
 DOCKER          = docker
-EXEC_PHP        = $(DOCKER_COMPOSE) exec -T apache
+EXEC_PHP        = $(DOCKER_COMPOSE) exec -T backend
 EXEC_MYSQL		= $(DOCKER_COMPOSE) exec -T db
 ARTISAN         = $(EXEC_PHP) php artisan
 
@@ -96,7 +96,7 @@ down: ## Stop the VMs
 
 connect: banner ## Connect to apache docker
 	printf " 👷\033[33m  Application shell ... \033[0m\n"
-	$(DOCKER_COMPOSE) exec apache bash
+	$(DOCKER_COMPOSE) exec backend bash
 	printf "\033[33mBye \033[0m\n\n"
 
 add-hooks:
@@ -208,7 +208,7 @@ assets: ## Compile assets
 	$(DOCKER) run  --rm -v `pwd`/:/project -w /project node:lts-alpine npm run --cache .npm/cache dev
 
 init-storage: ## Symlink storage dir
-	$(DOCKER_COMPOSE) exec apache php artisan storage:link
+	$(DOCKER_COMPOSE) exec backend php artisan storage:link
 
 migration: ## Generate a new eloquent migration
 	$(ARTISAN) make:migration new_migration_file
@@ -218,6 +218,9 @@ migrate-sql: ## Play latest eloquent migrations and export to SQL queries
 
 migrate: ## Play latest eloquent migrations
 	$(ARTISAN) migrate $(QUIET_PARAM)
+
+seed: ## Populate DB
+	$(ARTISAN) db:seed
 
 db-validate-schema: ## Validate the doctrine ORM mapping
 	printf " 💽\033[33m TODO \033[0m\n"
