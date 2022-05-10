@@ -45,7 +45,22 @@ coffee:
 	printf "\033[32m You can go take a coffee while we work for you \033[0m\n"
 
 banner:
-	printf "\033[95m WEB CV\n"
+	printf "\033[95m								\n"
+	printf "\033[95m██╗   ██╗ ██████╗ ██╗   ██╗████████╗██╗   ██╗██████╗ ███████╗\n"
+	printf "\033[95m╚██╗ ██╔╝██╔═══██╗██║   ██║╚══██╔══╝██║   ██║██╔══██╗██╔════╝\n"
+	printf "\033[95m ╚████╔╝ ██║   ██║██║   ██║   ██║   ██║   ██║██████╔╝█████╗  \n"
+	printf "\033[95m  ╚██╔╝  ██║   ██║██║   ██║   ██║   ██║   ██║██╔══██╗██╔══╝  \n"
+	printf "\033[95m   ██║   ╚██████╔╝╚██████╔╝   ██║   ╚██████╔╝██████╔╝███████╗\n"
+	printf "\033[95m   ╚═╝    ╚═════╝  ╚═════╝    ╚═╝    ╚═════╝ ╚═════╝ ╚══════╝\n"
+	printf "\033[95m                                                             \n"
+	printf "\033[95m██╗     ██╗██╗  ██╗███████╗                                  \n"
+	printf "\033[95m██║     ██║██║ ██╔╝██╔════╝                                  \n"
+	printf "\033[95m██║     ██║█████╔╝ █████╗                                    \n"
+	printf "\033[95m██║     ██║██╔═██╗ ██╔══╝                                    \n"
+	printf "\033[95m███████╗██║██║  ██╗███████╗                                  \n"
+	printf "\033[95m╚══════╝╚═╝╚═╝  ╚═╝╚══════╝    \n"
+	printf "\033[95m								\n"
+
 #
 .DEFAULT_GOAL := help
 help: banner ## this help
@@ -79,6 +94,11 @@ down: ## Stop the VMs
 	$(DOCKER_COMPOSE) down --volumes
 	printf "\n\n"
 
+connect: banner ## Connect to apache docker
+	printf " 👷\033[33m  Application shell ... \033[0m\n"
+	$(DOCKER_COMPOSE) exec apache bash
+	printf "\033[33mBye \033[0m\n\n"
+
 add-hooks:
 	 rm -fr .git/hooks && ln -s `pwd`/.hooks/ .git/hooks
 
@@ -93,8 +113,8 @@ ifndef NGINX_PROXY_DIRECTORY
 endif
 
 nginx-setup: require-nginx
-	if [ ! -f $(NGINX_PROXY_DIRECTORY)/docker/vhost.d/youtube.like.test ]; then \
-		echo 'client_max_body_size 10m;' > $(NGINX_PROXY_DIRECTORY)/docker/vhost.d/youtube.like.test;\
+	if [ ! -f $(NGINX_PROXY_DIRECTORY)/docker/vhost.d/backend.micro.test ]; then \
+		echo 'client_max_body_size 10m;' > $(NGINX_PROXY_DIRECTORY)/docker/vhost.d/backend.micro.test;\
 	fi; \
 
 
@@ -102,12 +122,12 @@ start-nginx-proxy: nginx-setup add-certificates
 	nginx_proxy
 
 add-certificates: require-nginx
-ifeq ("$(wildcard ${NGINX_PROXY_DIRECTORY}/docker/certs/youtube.like.test.crt)","")
+ifeq ("$(wildcard ${NGINX_PROXY_DIRECTORY}/docker/certs/backend.micro.test.crt)","")
 	echo "generating nginx proxy certs"
 	if [ ! -f ${NGINX_PROXY_DIRECTORY}/docker/certs/AUTHORITY.crt ]; then \
 		nginx_proxy_ssl gen_authority;\
 	fi;\
-	nginx_proxy_ssl gen youtube.like.test
+	nginx_proxy_ssl gen backend.micro.test
 	nginx_proxy restart
 else
 	echo "certs aldready added"
@@ -123,17 +143,17 @@ host-manager: login-sudo
 
 add-hosts:host-manager
 	sudo ./host-manager -add mailer-dev.local.dev 127.0.0.1
-	sudo ./host-manager -add youtube.like.test 127.0.0.1
+	sudo ./host-manager -add backend.micro.test 127.0.0.1
 
 remove-hosts:login-sudo
 	sudo ./host-manager -remove mailer-dev.local.dev
-	sudo ./host-manager -remove youtube.like.test
+	sudo ./host-manager -remove backend.micro.test
 
 .env:
 	cp .env.example .env
 	#$(ARTISAN) key:generate
 
-start: add-hooks add-hosts .env run vendor assets init-database ## Run project
+start: add-hooks add-hosts .env run vendor assets init-storage init-database ## Run project
 
 .PHONY: start-nginx-proxy add-certificates nginx-setup
 
@@ -186,6 +206,9 @@ assets: ## Compile assets
 	$(DOCKER) run  --rm -v `pwd`/:/project -w /project node:lts-alpine npm install
 	mkdir -p .npm/cache/
 	$(DOCKER) run  --rm -v `pwd`/:/project -w /project node:lts-alpine npm run --cache .npm/cache dev
+
+init-storage: ## Symlink storage dir
+	$(DOCKER_COMPOSE) exec apache php artisan storage:link
 
 migration: ## Generate a new eloquent migration
 	$(ARTISAN) make:migration new_migration_file
