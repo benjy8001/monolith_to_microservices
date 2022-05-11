@@ -1,6 +1,10 @@
 GET https://backend.micro.test/api/users
 Accept: application/json
 
+###
+GET https://backend.micro.test/api/users/1
+Accept: application/json
+
 <> 2022-05-10T233252.200.html
 <> 2022-05-10T233217.500.json
 <> 2022-05-10T233046.500.json

@@ -1,0 +1,21 @@
+POST https://backend.micro.test/api/users
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="last_name"
+
+test
+--WebAppBoundary
+Content-Disposition: form-data; name="first_name"
+
+test 2
+--WebAppBoundary
+Content-Disposition: form-data; name="email"
+
+test@yopmail.fr
+--WebAppBoundary
+Content-Disposition: form-data; name="password"
+
+password
+--WebAppBoundary--
+

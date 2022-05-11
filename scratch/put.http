@@ -1,0 +1,5 @@
+PUT https://backend.micro.test/api/users/1
+Content-Type: application/x-www-form-urlencoded
+
+last_name=test_update&first_name=test 2&email=testupdate@yopmail.com&password=tutu
+
