@@ -1,5 +1,6 @@
 POST https://backend.micro.test/api/users
 Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: application/json
 
 --WebAppBoundary
 Content-Disposition: form-data; name="last_name"
@@ -12,7 +13,7 @@ test 2
 --WebAppBoundary
 Content-Disposition: form-data; name="email"
 
-test@yopmail.fr
+test-3@yopmail.fr
 --WebAppBoundary
 Content-Disposition: form-data; name="password"
 

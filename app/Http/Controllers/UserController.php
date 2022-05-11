@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
+    /** @var string */
+    private const DEFAULT_PASSWORD = 'password';
+
     public function index(): string
     {
         return User::all();
@@ -25,37 +29,28 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
+     * @param UserCreateRequest $request
      * @return Response
      */
-    public function store(Request $request): Response
+    public function store(UserCreateRequest $request): Response
     {
-        $user = User::create([
-            'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+        $user = User::create(
+            $request->only('first_name', 'last_name', 'email') +
+            ['password' => Hash::make(self::DEFAULT_PASSWORD)]
+        );
 
         return response($user, Response::HTTP_CREATED);
     }
 
     /**
-     * @param Request $request
-     * @param int     $id
-     *
+     * @param UserUpdateRequest $request
+     * @param int $id
      * @return Response
      */
-    public function update(Request $request, int $id): Response
+    public function update(UserUpdateRequest $request, int $id): Response
     {
         $user = User::find($id);
-        $user->update([
-            'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+        $user->update($request->only('first_name', 'last_name', 'email'));
 
         return response($user, Response::HTTP_ACCEPTED);
     }
