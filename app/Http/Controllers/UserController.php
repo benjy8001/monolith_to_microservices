@@ -13,9 +13,9 @@ class UserController extends Controller
     /** @var string */
     private const DEFAULT_PASSWORD = 'password';
 
-    public function index(): string
+    public function index()
     {
-        return User::all();
+        return User::paginate();
     }
 
     /**

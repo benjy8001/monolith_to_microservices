@@ -1,4 +1,5 @@
-GET https://backend.micro.test/api/users
+GET https://backend.micro.test/api/users?page=2
+Content-Type: application/json
 Accept: application/json
 
 ###
