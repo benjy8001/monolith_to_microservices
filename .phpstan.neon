@@ -1,0 +1,4 @@
+parameters:
+	ignoreErrors:
+		- '#Caught class ImagickException not found.#'
+		- "#Class 'Imagick' not found#"

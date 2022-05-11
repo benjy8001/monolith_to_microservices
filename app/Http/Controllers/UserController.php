@@ -16,6 +16,7 @@ class UserController extends Controller
 
     /**
      * @param int $id
+     *
      * @return mixed
      */
     public function show(int $id)
@@ -25,6 +26,7 @@ class UserController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function store(Request $request): Response
@@ -41,7 +43,8 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param int     $id
+     *
      * @return Response
      */
     public function update(Request $request, int $id): Response
@@ -59,6 +62,7 @@ class UserController extends Controller
 
     /**
      * @param int $id
+     *
      * @return Response
      */
     public function destroy(int $id): Response
