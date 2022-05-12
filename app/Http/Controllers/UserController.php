@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,17 +17,19 @@ class UserController extends Controller
     /** @var string */
     private const DEFAULT_PASSWORD = 'password';
 
-    public function index()
+    /**
+     * @return LengthAwarePaginator
+     */
+    public function index(): LengthAwarePaginator
     {
         return User::paginate();
     }
 
     /**
      * @param int $id
-     *
-     * @return mixed
+     * @return User|null
      */
-    public function show(int $id)
+    public function show(int $id): ?User
     {
         return User::find($id);
     }
@@ -57,7 +63,6 @@ class UserController extends Controller
 
     /**
      * @param int $id
-     *
      * @return Response
      */
     public function destroy(int $id): Response
@@ -65,5 +70,39 @@ class UserController extends Controller
         User::destroy($id);
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @return User
+     */
+    public function user(): User
+    {
+        return Auth::user();
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function updateInfo(Request $request): Response
+    {
+        $user = Auth::user();
+        $user->update($request->only('first_name', 'last_name', 'email'));
+
+        return response($user, Response::HTTP_ACCEPTED);
+    }
+
+    /**
+     * @param Request $request
+     * @return Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request): Response
+    {
+        $user = Auth::user();
+        $user->update([
+            'password' => Hash::make($request->input('password')),
+        ]);
+
+        return response($user, Response::HTTP_ACCEPTED);
     }
 }
