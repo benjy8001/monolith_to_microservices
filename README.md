@@ -1,5 +1,6 @@
 ```
 php artisan passport:install
+artisan make:controller RoleController --api
 ```
 
 
