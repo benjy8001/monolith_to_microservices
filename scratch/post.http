@@ -5,6 +5,13 @@ Accept: application/json
 email=deckow.maia@example.com&password=password
 
 ###
+POST https://backend.micro.test/api/register
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+first_name=John&last_name=Doe&email=john.doe@example.com&password=password&password_confirm=password
+
+###
 POST https://backend.micro.test/api/users
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: application/json
