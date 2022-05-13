@@ -13,6 +13,7 @@ class AuthController extends Controller
 {
     /**
      * @param Request $request
+     *
      * @return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function login(Request $request)
@@ -31,9 +32,10 @@ class AuthController extends Controller
 
     /**
      * @param RegisterRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     *
+     * @return Response
      */
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request): Response
     {
         $user = User::create(
             $request->only('first_name', 'last_name', 'email') +
