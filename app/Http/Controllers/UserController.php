@@ -27,9 +27,7 @@ class UserController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $user = User::paginate();
-
-        return UserResource::collection($user);
+        return UserResource::collection(User::paginate());
     }
 
     /**
@@ -39,9 +37,7 @@ class UserController extends Controller
      */
     public function show(int $id): UserResource
     {
-        $user = User::find($id);
-
-        return new UserResource($user);
+        return new UserResource(User::find($id));
     }
 
     /**

@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        //
+        return ProductResource::collection(Product::paginate());
     }
 
     /**
@@ -28,14 +30,13 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @param int $id
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return ProductResource
      */
-    public function show($id)
+    public function show(int $id): ProductResource
     {
-        //
+        return new ProductResource(Product::find($id));
     }
 
     /**
@@ -51,13 +52,13 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): Response
     {
-        //
+        Product::destroy($id);
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
