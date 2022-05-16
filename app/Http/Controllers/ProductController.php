@@ -6,6 +6,8 @@ use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
@@ -19,14 +21,24 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param Request $request
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
-        //
+        $file = $request->file('image');
+        $name = sprintf('%s.%s', Str::random(10), $file->extension());
+        $url = sprintf('%s/%s', env('APP_URL'), Storage::putFileAs('images', $file, $name));
+
+        $product = Product::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'price' => $request->input('price'),
+            'image' => $url,
+        ]);
+
+        return response($product, Response::HTTP_CREATED);
     }
 
     /**
