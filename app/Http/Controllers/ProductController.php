@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductCreateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -21,24 +22,15 @@ class ProductController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param ProductCreateRequest $request
      *
      * @return Response
      */
-    public function store(Request $request): Response
+    public function store(ProductCreateRequest $request): Response
     {
-        $file = $request->file('image');
-        $name = sprintf('%s.%s', Str::random(10), $file->extension());
-        $url = sprintf('%s/%s', env('APP_URL'), Storage::putFileAs('images', $file, $name));
+        $product = Product::create($request->only('title', 'description', 'image', 'price'));
 
-        $product = Product::create([
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'image' => $url,
-        ]);
-
-        return response($product, Response::HTTP_CREATED);
+        return response(new ProductResource($product), Response::HTTP_CREATED);
     }
 
     /**
@@ -52,15 +44,17 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param Request $request
+     * @param int     $id
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): Response
     {
-        //
+        $product = Product::find($id);
+        $product->update($request->only('title', 'description', 'image', 'price'));
+
+        return response(new ProductResource($product), Response::HTTP_ACCEPTED);
     }
 
     /**
