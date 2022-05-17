@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Order $order
+ * @method static \Database\Factories\OrderItemFactory factory(...$parameters)
  */
 class OrderItem extends Model
 {
