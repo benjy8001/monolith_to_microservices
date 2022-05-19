@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Role
@@ -23,5 +24,14 @@ class Role extends Model
 
     protected $guarded = ['id'];
 
+    public const ROLE_PERMISSION_TABLE_NAME = 'role_permission';
     public $timestamps = false;
+
+    /**
+     * @return BelongsToMany
+     */
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, self::ROLE_PERMISSION_TABLE_NAME);
+    }
 }
