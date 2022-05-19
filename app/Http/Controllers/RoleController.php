@@ -7,6 +7,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
@@ -16,6 +17,8 @@ class RoleController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
+        Gate::authorize('view', 'roles');
+
         return RoleResource::collection(Role::all());
     }
 
@@ -25,6 +28,8 @@ class RoleController extends Controller
      */
     public function store(Request $request): Response
     {
+        Gate::authorize('edit', 'roles');
+
         $role = Role::create($request->only('name'));
         if ($permissions = $request->input('permissions')) {
             foreach ($permissions as $permission_id) {
@@ -45,6 +50,8 @@ class RoleController extends Controller
      */
     public function show(int $id): RoleResource
     {
+        Gate::authorize('view', 'roles');
+
         return new RoleResource(Role::find($id));
     }
 
@@ -55,6 +62,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, int $id): Response
     {
+        Gate::authorize('edit', 'roles');
+
         $role = Role::find($id);
         $role->update($request->only('name'));
 
@@ -79,6 +88,8 @@ class RoleController extends Controller
      */
     public function destroy(int $id): Response
     {
+        Gate::authorize('edit', 'roles');
+
         DB::table(Role::ROLE_PERMISSION_TABLE_NAME)->where('role_id', $id)->delete();
         Role::destroy($id);
 

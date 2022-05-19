@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Response as ResponseFacade;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -16,6 +17,8 @@ class OrderController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
+        Gate::authorize('view', 'orders');
+
         return OrderResource::collection(Order::paginate());
     }
 
@@ -26,6 +29,8 @@ class OrderController extends Controller
      */
     public function show(int $id): OrderResource
     {
+        Gate::authorize('view', 'orders');
+
         return new OrderResource(Order::find($id));
     }
 
@@ -34,6 +39,8 @@ class OrderController extends Controller
      */
     public function export(): StreamedResponse
     {
+        Gate::authorize('view', 'orders');
+
         $headers = [
             'Content-type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename=orders.csv',
