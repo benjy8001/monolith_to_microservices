@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Passport\HasApiTokens;
 
 /**
@@ -66,10 +67,19 @@ class User extends Authenticatable
     }
 
     /**
-     * @return array
+     * @return Collection
      */
-    public function permissions(): array
+    public function permissions(): Collection
     {
         return $this->role->permissions->pluck('name');
+    }
+
+    /**
+     * @param string $access
+     * @return bool
+     */
+    public function hasAccess(string $access): bool
+    {
+        return $this->permissions()->contains($access);
     }
 }
