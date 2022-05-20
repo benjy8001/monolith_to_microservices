@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ class OrderController extends Controller
 {
     /**
      * @return AnonymousResourceCollection
+     * @throws AuthorizationException
      */
     public function index(): AnonymousResourceCollection
     {
@@ -26,6 +28,7 @@ class OrderController extends Controller
      * @param int $id
      *
      * @return OrderResource
+     * @throws AuthorizationException
      */
     public function show(int $id): OrderResource
     {
@@ -36,6 +39,7 @@ class OrderController extends Controller
 
     /**
      * @return StreamedResponse
+     * @throws AuthorizationException
      */
     public function export(): StreamedResponse
     {

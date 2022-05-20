@@ -8,6 +8,7 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +26,7 @@ class UserController extends Controller
 
     /**
      * @return AnonymousResourceCollection
+     * @throws AuthorizationException
      */
     public function index(): AnonymousResourceCollection
     {
@@ -37,6 +39,7 @@ class UserController extends Controller
      * @param int $id
      *
      * @return UserResource
+     * @throws AuthorizationException
      */
     public function show(int $id): UserResource
     {
@@ -47,7 +50,9 @@ class UserController extends Controller
 
     /**
      * @param UserCreateRequest $request
+     *
      * @return Response
+     * @throws AuthorizationException
      */
     public function store(UserCreateRequest $request): Response
     {
@@ -63,8 +68,10 @@ class UserController extends Controller
 
     /**
      * @param UserUpdateRequest $request
-     * @param int $id
+     * @param int               $id
+     *
      * @return Response
+     * @throws AuthorizationException
      */
     public function update(UserUpdateRequest $request, int $id): Response
     {
@@ -78,7 +85,9 @@ class UserController extends Controller
 
     /**
      * @param int $id
+     *
      * @return Response
+     * @throws AuthorizationException
      */
     public function destroy(int $id): Response
     {

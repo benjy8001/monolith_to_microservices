@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,7 @@ class RoleController extends Controller
 {
     /**
      * @return AnonymousResourceCollection
+     * @throws AuthorizationException
      */
     public function index(): AnonymousResourceCollection
     {
@@ -24,7 +26,9 @@ class RoleController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return Response
+     * @throws AuthorizationException
      */
     public function store(Request $request): Response
     {
@@ -47,6 +51,7 @@ class RoleController extends Controller
      * @param int $id
      *
      * @return RoleResource
+     * @throws AuthorizationException
      */
     public function show(int $id): RoleResource
     {
@@ -57,8 +62,10 @@ class RoleController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param int     $id
+     *
      * @return Response
+     * @throws AuthorizationException
      */
     public function update(Request $request, int $id): Response
     {
@@ -84,7 +91,9 @@ class RoleController extends Controller
 
     /**
      * @param int $id
+     *
      * @return Response
+     * @throws AuthorizationException
      */
     public function destroy(int $id): Response
     {

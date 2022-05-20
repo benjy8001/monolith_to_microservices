@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
     /**
      * @return AnonymousResourceCollection
+     * @throws AuthorizationException
      */
     public function index(): AnonymousResourceCollection
     {
@@ -28,6 +28,7 @@ class ProductController extends Controller
      * @param ProductCreateRequest $request
      *
      * @return Response
+     * @throws AuthorizationException
      */
     public function store(ProductCreateRequest $request): Response
     {
@@ -42,6 +43,7 @@ class ProductController extends Controller
      * @param int $id
      *
      * @return ProductResource
+     * @throws AuthorizationException
      */
     public function show(int $id): ProductResource
     {
@@ -55,6 +57,7 @@ class ProductController extends Controller
      * @param int     $id
      *
      * @return Response
+     * @throws AuthorizationException
      */
     public function update(Request $request, int $id): Response
     {
@@ -68,7 +71,9 @@ class ProductController extends Controller
 
     /**
      * @param int $id
+     *
      * @return Response
+     * @throws AuthorizationException
      */
     public function destroy(int $id): Response
     {
