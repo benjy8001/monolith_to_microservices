@@ -46,9 +46,11 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (\Exception $e, $request) {
             if ($request->is('api/*')) {
+                $code = $e->getCode() ?: 400;
+
                 return response()->json([
                     'error' => $e->getMessage()
-                ], $e->getCode() ?: 400);
+                ], is_int($code) ? $code : 400);
             }
         });
     }
