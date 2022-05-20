@@ -1,6 +1,8 @@
 ```
 php artisan passport:install
 artisan make:controller RoleController --api
+docker run --network=nginx-proxy --rm -v `pwd`/:/project -w /project -u $(id -u):$(id -g) node:lts
+-alpine npx create-react-app react-admin --template typescript
 ```
 
 

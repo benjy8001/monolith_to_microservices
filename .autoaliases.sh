@@ -4,7 +4,7 @@ DOCKER_COMPOSE_OPTION="-T"
 DOCKER_OPTION=""
 
 npm() {
-   docker run $DOCKER_OPTION --network=nginx-proxy --rm -v `pwd`/:/project -w /project node:lts-alpine npm "$@"
+   docker run $DOCKER_OPTION --network=nginx-proxy --rm -v `pwd`/:/project -w /project -u $(id -u):$(id -g) node:lts-alpine npm "$@"
 }
 
 phpqa() {

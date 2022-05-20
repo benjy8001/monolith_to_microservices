@@ -216,9 +216,9 @@ composer-install:
 	$(COMPOSER) install ${QUIET_PARAM}
 
 assets: ## Compile assets
-	$(DOCKER) run  --rm -v `pwd`/:/project -w /project node:lts-alpine npm install
+	$(DOCKER) run  --rm -v `pwd`/:/project -w /project -u $(id -u):$(id -g) node:lts-alpine npm install
 	mkdir -p .npm/cache/
-	$(DOCKER) run  --rm -v `pwd`/:/project -w /project node:lts-alpine npm run --cache .npm/cache dev
+	$(DOCKER) run  --rm -v `pwd`/:/project -w /project -u $(id -u):$(id -g) node:lts-alpine npm run --cache .npm/cache dev
 
 init-storage: ## Symlink storage dir
 	$(DOCKER_COMPOSE) exec backend php artisan storage:link

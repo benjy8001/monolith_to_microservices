@@ -1,13 +1,39 @@
 version: '3.7'
 
 services:
+    frontend:
+        container_name: admin_react
+        build:
+            context: ./react-admin
+            dockerfile: Dockerfile-frontend
+        volumes:
+            - frontend_sources:/usr/src/app:rw
+        environment:
+            - XDEBUG_CONFIG=remote_host=172.0.0.1 remote_enable=on
+            - COMPOSER_AUTH=${COMPOSER_AUTH}
+            - VIRTUAL_HOST=frontend.micro.test
+            - VIRTUAL_PORT=3000
+        #ports:
+        #    - "81:3000"
+        depends_on:
+            - backend
+        links:
+            - backend:admin_api
+        env_file:
+            - react-admin/.env
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1M"
+                max-file: "5"
+
     backend:
         container_name: admin_api
         build:
-            context: ./
-            dockerfile: Dockerfile
+            context: ./backend
+            dockerfile: Dockerfile-backend
         volumes:
-            - sources:/var/www:rw
+            - backend_sources:/var/www:rw
             - ./docker/vhost.d:/etc/apache2/sites-enabled
         environment:
             - XDEBUG_CONFIG=remote_host=172.0.0.1 remote_enable=on
@@ -21,7 +47,7 @@ services:
             - db:db
             - mail:mail
         env_file:
-            - .env
+            - backend/.env
         logging:
             driver: "json-file"
             options:
@@ -52,12 +78,18 @@ services:
 
 volumes:
     database: ~
-    sources:
+    frontend_sources:
         driver: local
         driver_opts:
             o: bind
             type: none
-            device: $PWD
+            device: $PWD/react-admin
+    backend_sources:
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: $PWD/backend
 
 networks:
     default:
