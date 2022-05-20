@@ -18,7 +18,7 @@ COMPOSER = ${QA} composer
 
 REF_BRANCH ?= 'master'
 
-DOCKER_DB_ROOT_PASSWORD := $(shell cat docker-compose.yml|grep MYSQL_ROOT_PASSWORD|cut -d ":" -f2 |sed -e 's/^[ \t]*//')
+DOCKER_DB_ROOT_PASSWORD := $(shell cat ../docker-compose.yml|grep MYSQL_ROOT_PASSWORD|cut -d ":" -f2 |sed -e 's/^[ \t]*//')
 DATABASE :=  $(shell cat .env.example|grep DB_DATABASE|cut -d "=" -f2 |sed -e 's/^[ \t]*//')
 DATABASE_USER :=  $(shell cat .env.example|grep DB_USERNAME|cut -d "=" -f2 |sed -e 's/^[ \t]*//')
 
@@ -222,6 +222,9 @@ assets: ## Compile assets
 
 init-storage: ## Symlink storage dir
 	$(DOCKER_COMPOSE) exec backend php artisan storage:link
+
+passport-install: ## passport:install
+	$(DOCKER_COMPOSE) exec backend php artisan passport:install
 
 migration: ## Generate a new eloquent migration
 	$(ARTISAN) make:migration new_migration_file
