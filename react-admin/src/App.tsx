@@ -1,9 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Nav from './components/Nav';
-import Menu from './components/Menu';
-import Dashboard from './components/Dashboard';
+import Nav from './secure/components/Nav';
+import Menu from './secure/components/Menu';
+import Dashboard from './secure/Dashboard';
+import Users from "./secure/Users";
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 function App() {
   return (
@@ -14,7 +16,12 @@ function App() {
             <Menu />
 
             <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-              <Dashboard />
+                <BrowserRouter>
+                    <Routes>
+                        <Route path='/' element={<Dashboard />} />
+                        <Route path='/users' element={<Users />} />
+                    </Routes>
+                </BrowserRouter>
             </main>
           </div>
         </div>
