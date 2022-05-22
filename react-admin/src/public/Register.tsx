@@ -1,6 +1,7 @@
 import React, {Component, SyntheticEvent} from 'react';
 import axios from 'axios';
 import './Public.css';
+import { Navigate } from 'react-router-dom';
 
 class Register extends Component {
     first_name = '';
@@ -8,21 +9,31 @@ class Register extends Component {
     email = '';
     password = '';
     password_confirm = '';
+    state = {
+        redirect: false
+    }
 
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        const response = await axios.post('https://backend.micro.test/api/register', {
+        await axios.post('https://backend.micro.test/api/register', {
             first_name: this.first_name,
             last_name: this.last_name,
             email: this.email,
             password: this.password,
             password_confirm: this.password_confirm,
         });
-        console.log(response);
+
+        this.setState({
+           redirect: true
+        });
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Navigate to={'/login'} />;
+        }
+
         return (
             <main className="form-register w-100 m-auto">
                 <form onSubmit={this.submit}>
