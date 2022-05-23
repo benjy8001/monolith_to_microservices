@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import Wrapper from "./Wrapper";
+import Wrapper from "../Wrapper";
 import axios from "axios";
 import {User} from "../../classes/User";
 
