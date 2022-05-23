@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import axios from "axios";
 
 axios.defaults.baseURL = 'https://backend.micro.test/api/';
-axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
