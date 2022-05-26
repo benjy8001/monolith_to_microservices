@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component } from 'react';
 import Nav from "./components/Nav";
 import Menu from "./components/Menu";
 import axios from "axios";
 import {Navigate} from "react-router-dom";
 
-class Wrapper extends Component {
+class Wrapper extends Component<{ children: any }> {
     state = {
         redirect: false
     }

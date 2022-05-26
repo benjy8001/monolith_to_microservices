@@ -5,7 +5,7 @@ import {Role} from "../../classes/Role";
 import {User} from "../../classes/User";
 import { useParams } from 'react-router-dom';
 
-class UserEdit extends Component<{ props: PropsWithRef<any> }> {
+class UserEdit extends Component<{ params: any }> {
     state = {
         roles: [],
         first_name: '',
@@ -100,9 +100,10 @@ class UserEdit extends Component<{ props: PropsWithRef<any> }> {
     }
 }
 
-export default (props) => (
+//export default UserEdit;
+
+export default () => (
     <UserEdit
-        {...props}
         params={useParams()}
     />
 );

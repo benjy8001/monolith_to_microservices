@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from "axios";
+import { Navigate } from 'react-router-dom';
 
 class Nav extends Component {
     state = {
@@ -8,7 +9,7 @@ class Nav extends Component {
 
     handleClick = () => {
         localStorage.clear();
-        axios.defaults.headers.Authorization = '';
+        axios.defaults.headers.common['Authorization'] = '';
         this.setState({
             redirect: true
         });
