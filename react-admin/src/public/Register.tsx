@@ -3,14 +3,24 @@ import axios from 'axios';
 import './Public.css';
 import { Navigate } from 'react-router-dom';
 
-class Register extends Component {
-    first_name = '';
-    last_name = '';
-    email = '';
-    password = '';
-    password_confirm = '';
-    state = {
-        redirect: false
+class Register extends Component<any, any> {
+    private first_name: string;
+    private last_name: string;
+    private email: string;
+    private password: string;
+    private password_confirm: string;
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            redirect: false
+        }
+        this.first_name = '';
+        this.last_name = '';
+        this.email = '';
+        this.password = '';
+        this.password_confirm = '';
     }
 
     submit = async (e: SyntheticEvent) => {

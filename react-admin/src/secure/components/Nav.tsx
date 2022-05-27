@@ -2,9 +2,13 @@ import React, {Component} from 'react';
 import axios from "axios";
 import { Navigate } from 'react-router-dom';
 
-class Nav extends Component {
-    state = {
-        redirect: false
+class Nav extends Component<any, any> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            redirect: false
+        }
     }
 
     handleClick = () => {

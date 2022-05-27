@@ -3,11 +3,18 @@ import './Public.css';
 import axios from "axios";
 import {Navigate} from "react-router-dom";
 
-class Login extends Component {
-    email = '';
-    password = '';
-    state = {
-        redirect: false
+class Login extends Component<any, any> {
+    private email: string;
+    private password: string;
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            redirect: false
+        }
+        this.email = '';
+        this.password = '';
     }
 
     submit = async (e: SyntheticEvent) => {

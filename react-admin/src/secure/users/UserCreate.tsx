@@ -4,7 +4,7 @@ import axios from "axios";
 import {Role} from "../../classes/Role";
 import {Navigate} from "react-router-dom";
 
-class UserCreate extends Component {
+class UserCreate extends Component<any, any> {
     state = {
         roles: [],
         redirect: false

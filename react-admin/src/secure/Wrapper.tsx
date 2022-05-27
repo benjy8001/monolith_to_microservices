@@ -4,9 +4,13 @@ import Menu from "./components/Menu";
 import axios from "axios";
 import {Navigate} from "react-router-dom";
 
-class Wrapper extends Component<{ children: any }> {
-    state = {
-        redirect: false
+class Wrapper extends Component<{ children: any }, any> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            redirect: false
+        }
     }
 
     componentDidMount = async () => {

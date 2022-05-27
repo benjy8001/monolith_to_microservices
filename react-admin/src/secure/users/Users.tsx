@@ -4,7 +4,7 @@ import axios from "axios";
 import {User} from "../../classes/User";
 import {Link} from "react-router-dom";
 
-class Users extends Component {
+class Users extends Component<any, any> {
     state = {
         users: []
     }
