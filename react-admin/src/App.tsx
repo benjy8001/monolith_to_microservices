@@ -8,6 +8,7 @@ import Register from "./public/Register";
 import UserCreate from "./secure/users/UserCreate";
 import UserEdit from "./secure/users/UserEdit";
 import Roles from "./secure/roles/Roles";
+import RoleCreate from "./secure/roles/RoleCreate";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path='/users/create' element={<UserCreate />} />
                 <Route path='/users/:id/edit' element={<UserEdit />} />
                 <Route path='/roles' element={<Roles />} />
+                <Route path='/roles/create' element={<RoleCreate />} />
             </Routes>
         </BrowserRouter>
       </div>

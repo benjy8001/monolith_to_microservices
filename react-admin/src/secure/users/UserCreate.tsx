@@ -5,14 +5,23 @@ import {Role} from "../../classes/Role";
 import {Navigate} from "react-router-dom";
 
 class UserCreate extends Component<any, any> {
-    state = {
-        roles: [],
-        redirect: false
+    private first_name: string;
+    private last_name: string;
+    private email: string;
+    private role_id: number;
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            roles: [],
+            redirect: false
+        }
+        this.first_name = '';
+        this.last_name = '';
+        this.email = '';
+        this.role_id = 0;
     }
-    first_name = '';
-    last_name = '';
-    email = '';
-    role_id = 0;
 
     componentDidMount = async () => {
         const response = await axios.get(`roles`);
