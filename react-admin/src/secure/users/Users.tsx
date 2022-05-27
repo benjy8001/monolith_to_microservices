@@ -34,7 +34,7 @@ class Users extends Component<any, any> {
     }
 
     delete = async (id: number) => {
-        if (window.confirm('Ar you sure ?')) {
+        if (window.confirm('Are you sure ?')) {
             await axios.delete(`users/${id}`);
             this.setState({
                 users: this.state.users.filter((u: User) => u.id !== id)
@@ -51,7 +51,7 @@ class Users extends Component<any, any> {
                     </div>
                 </div>
 
-                <h2>Section title</h2>
+                <h2>Users list</h2>
                 <div className="table-responsive">
                     <table className="table table-striped table-sm">
                         <thead>
