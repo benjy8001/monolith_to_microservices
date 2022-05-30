@@ -3,21 +3,33 @@ import Wrapper from "../Wrapper";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {Product} from "../../classes/Product";
+import Paginator from "../components/Paginator";
 
 class Products extends Component<any, any> {
+    private page: number;
+    private last_page: number;
+
     constructor(props: any) {
         super(props);
 
+        this.page = 1;
+        this.last_page = 0
         this.state = {
             products: [],
         }
     }
 
     componentDidMount = async () => {
-        const productsCall = await axios.get(`products`);
+        const productsCall = await axios.get(`products?page=${this.page}`);
         this.setState({
             products: productsCall.data.data,
         });
+        this.last_page = productsCall.data.meta.last_page;
+    }
+
+    handlePageChange = async (page: number) => {
+        this.page = page;
+        await this.componentDidMount();
     }
 
     delete = async (id: number) => {
@@ -73,6 +85,8 @@ class Products extends Component<any, any> {
                         </tbody>
                     </table>
                 </div>
+
+                <Paginator lastPage={this.last_page} handlePageChange={this.handlePageChange}/>
             </Wrapper>
         );
     }
