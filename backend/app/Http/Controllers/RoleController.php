@@ -75,7 +75,7 @@ class RoleController extends Controller
         $role->update($request->only('name'));
 
         // @todo : Use of Repository to do that
-        DB::table('role_permision')->where('role_id', $role->id)->delete();
+        DB::table('role_permission')->where('role_id', $role->id)->delete();
         if ($permissions = $request->input('permissions')) {
             foreach ($permissions as $permission_id) {
                 DB::table(Role::ROLE_PERMISSION_TABLE_NAME)->insert([
