@@ -2,6 +2,7 @@ import React, {Component, SyntheticEvent} from 'react';
 import Wrapper from "../Wrapper";
 import {Navigate} from "react-router-dom";
 import axios from "axios";
+import ImageUpload from "../components/ImageUpload";
 
 class ProductCreate extends Component<any, any> {
     private title: string;
@@ -38,14 +39,8 @@ class ProductCreate extends Component<any, any> {
         });
     }
 
-    upload = async (files: FileList | null) => {
-        if (null === files) return;
-
-        const data = new FormData();
-        data.append('image', files[0]);
-
-        const response = await axios.post('upload', data);
-        this.image = response.data.url;
+    imageChangeHandler = (image: string) => {
+        this.image = image;
         this.setState({
             image: this.image,
         })
@@ -69,16 +64,7 @@ class ProductCreate extends Component<any, any> {
                     </div>
                     <div className="form-group">
                         <label>Image</label>
-                        <div className="input-group">
-                            <input type="text" className="form-control" name="image"
-                                    value={this.image = this.state.image}
-                                    onChange={e => this.image = e.target.value} />
-                            <div className="input-group-append">
-                                <label className="btn btn-primary">
-                                    Upload <input type="file" hidden onChange={e => this.upload(e.target.files)} />
-                                </label>
-                            </div>
-                        </div>
+                        <ImageUpload value={this.image = this.state.image} imageChangeHandler={this.imageChangeHandler} />
                     </div>
                     <div className="form-group">
                         <label>Price</label>
