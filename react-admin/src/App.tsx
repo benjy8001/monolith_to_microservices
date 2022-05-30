@@ -13,6 +13,7 @@ import RoleEdit from "./secure/roles/RoleEdit";
 import Products from "./secure/products/Products";
 import ProductCreate from "./secure/products/ProductCreate";
 import ProductEdit from "./secure/products/ProductEdit";
+import Orders from "./secure/orders/Orders";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
                 <Route path='/products' element={<Products />} />
                 <Route path='/products/create' element={<ProductCreate />} />
                 <Route path='/products/:id/edit' element={<ProductEdit />} />
+                <Route path='/orders' element={<Orders />} />
             </Routes>
         </BrowserRouter>
       </div>

@@ -2,29 +2,34 @@ import React, {Component} from 'react';
 import Wrapper from "../Wrapper";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {Role} from "../../classes/Role";
-import Deleter from "../components/Deleter";
+import {Order} from "../../classes/Order";
+import Paginator from "../components/Paginator";
 
-class Roles extends Component<any, any> {
+class Orders extends Component<any, any> {
+    private page: number;
+    private last_page: number;
+
     constructor(props: any) {
         super(props);
 
+        this.page = 1;
+        this.last_page = 0
         this.state = {
-            roles: [],
+            orders: [],
         }
     }
 
     componentDidMount = async () => {
-        const rolesCall = await axios.get(`roles`);
+        const ordersCall = await axios.get(`orders?page=${this.page}`);
         this.setState({
-            roles: rolesCall.data.data,
+            orders: ordersCall.data.data,
         });
+        this.last_page = ordersCall.data.meta.last_page;
     }
 
-    handleDelete = async (id: number) => {
-        this.setState({
-            roles: this.state.roles.filter((r: Role) => r.id !== id)
-        });
+    handlePageChange = async (page: number) => {
+        this.page = page;
+        await this.componentDidMount();
     }
 
     render() {
@@ -32,7 +37,7 @@ class Roles extends Component<any, any> {
             <Wrapper>
                 <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 col-md-3 border-bottom">
                     <div className="btn-toolbar mb-2 mb-md-0">
-                        <Link to={'/roles/create'} className="btn btn-sm btn-outline-secondary">Add</Link>
+                        <Link to={'/orders/create'} className="btn btn-sm btn-outline-secondary">Add</Link>
                     </div>
                 </div>
 
@@ -43,20 +48,23 @@ class Roles extends Component<any, any> {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Total</th>
                             <th scope="col">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {this.state.roles.map(
-                            (role: Role) => {
+                        {this.state.orders.map(
+                            (order: Order) => {
                                 return (
-                                    <tr key={role.id}>
-                                        <td>{role.id}</td>
-                                        <td>{role.name}</td>
+                                    <tr key={order.id}>
+                                        <td>{order.id}</td>
+                                        <td>{order.first_name} {order.last_name}</td>
+                                        <td>{order.email}</td>
+                                        <td>{order.total}</td>
                                         <td>
                                             <div className="btn-group mr-2">
-                                                <Link to={`/roles/${role.id}/edit`} className="btn btn-sm btn-outline-secondary">Edit</Link>
-                                                <Deleter id={role.id} endpoint={'roles'} handleDelete={this.handleDelete} />
+                                                <Link to={`/orders/${order.id}`} className="btn btn-sm btn-outline-secondary">View</Link>
                                             </div>
                                         </td>
                                     </tr>
@@ -66,9 +74,11 @@ class Roles extends Component<any, any> {
                         </tbody>
                     </table>
                 </div>
+
+                <Paginator lastPage={this.last_page} handlePageChange={this.handlePageChange} />
             </Wrapper>
         );
     }
 }
 
-export default Roles;
+export default Orders;
