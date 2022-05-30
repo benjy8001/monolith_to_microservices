@@ -11,6 +11,7 @@ import Roles from "./secure/roles/Roles";
 import RoleCreate from "./secure/roles/RoleCreate";
 import RoleEdit from "./secure/roles/RoleEdit";
 import Products from "./secure/products/Products";
+import ProductCreate from "./secure/products/ProductCreate";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
                 <Route path='/roles/create' element={<RoleCreate />} />
                 <Route path='/roles/:id/edit' element={<RoleEdit />} />
                 <Route path='/products' element={<Products />} />
+                <Route path='/products/create' element={<ProductCreate />} />
             </Routes>
         </BrowserRouter>
       </div>

@@ -73,7 +73,7 @@ class Products extends Component<any, any> {
                                         <td>
                                             <div className="btn-group mr-2">
                                                 <Link to={`/products/${product.id}/edit`} className="btn btn-sm btn-outline-secondary">Edit</Link>
-                                                <Deleter id={product.id} endpoint={'/products'} handleDelete={this.handleDelete} />
+                                                <Deleter id={product.id} endpoint={'products'} handleDelete={this.handleDelete} />
                                             </div>
                                         </td>
                                     </tr>

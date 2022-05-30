@@ -56,7 +56,7 @@ class Roles extends Component<any, any> {
                                         <td>
                                             <div className="btn-group mr-2">
                                                 <Link to={`/roles/${role.id}/edit`} className="btn btn-sm btn-outline-secondary">Edit</Link>
-                                                <Deleter id={role.id} endpoint={'/roles'} handleDelete={this.handleDelete} />
+                                                <Deleter id={role.id} endpoint={'roles'} handleDelete={this.handleDelete} />
                                             </div>
                                         </td>
                                     </tr>

@@ -72,7 +72,7 @@ class Users extends Component<any, any> {
                                         <td>
                                             <div className="btn-group mr-2">
                                                 <Link to={`/users/${user.id}/edit`} className="btn btn-sm btn-outline-secondary">Edit</Link>
-                                                <Deleter id={user.id} endpoint={'/users'} handleDelete={this.handleDelete} />
+                                                <Deleter id={user.id} endpoint={'users'} handleDelete={this.handleDelete} />
                                             </div>
                                         </td>
                                     </tr>
