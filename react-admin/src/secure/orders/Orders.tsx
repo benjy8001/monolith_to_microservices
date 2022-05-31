@@ -32,12 +32,22 @@ class Orders extends Component<any, any> {
         await this.componentDidMount();
     }
 
+    handlerExport = async () => {
+        const reponse = await axios.get(`export`, {responseType: 'blob'});
+        //const blob = new Blob([reponse.data], {type: 'text/csv'});
+        const downloadUrl = window.URL.createObjectURL(reponse.data);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = 'orders.csv';
+        link.click();
+    }
+
     render() {
         return (
             <Wrapper>
                 <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 col-md-3 border-bottom">
                     <div className="btn-toolbar mb-2 mb-md-0">
-                        <Link to={'/orders/create'} className="btn btn-sm btn-outline-secondary">Add</Link>
+                        <a onClick={this.handlerExport} className="btn btn-sm btn-outline-secondary">Export</a>
                     </div>
                 </div>
 
