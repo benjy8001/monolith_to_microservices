@@ -41,7 +41,7 @@ class Orders extends Component<any, any> {
                     </div>
                 </div>
 
-                <h2>Roles list</h2>
+                <h2>Orders list</h2>
                 <div className="table-responsive">
                     <table className="table table-striped table-sm">
                         <thead>
