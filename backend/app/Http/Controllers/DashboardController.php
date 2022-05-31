@@ -19,7 +19,7 @@ class DashboardController extends Controller
         Gate::authorize('view', 'orders');
 
         return ChartResource::collection(Order::query()
-            ->join('order_items', 'orders_id', '=', 'order_items.order_id')
+            ->join('order_items', 'orders.id', '=', 'order_items.order_id')
             ->selectRaw('DATE_FORMAT(orders.created_at, "%Y-%m-%d") AS date, SUM(order_items.quantity * order_items.price) AS sum')
             ->groupBy('date')
             ->get());
