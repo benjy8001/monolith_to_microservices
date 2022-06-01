@@ -1,14 +1,23 @@
 import React, {Component} from 'react';
 import axios from "axios";
-import { Navigate } from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
+import {User} from "../../classes/User";
 
 class Nav extends Component<any, any> {
     constructor(props: any) {
         super(props);
 
         this.state = {
+            user: new User(),
             redirect: false
         }
+    }
+
+    componentDidMount = async () => {
+        const response = await axios.get('user');
+        this.setState({
+            user: response.data.data
+        });
     }
 
     handleClick = () => {
@@ -33,7 +42,8 @@ class Nav extends Component<any, any> {
                 </button>
                 <div className="navbar-nav">
                     <div className="nav-item text-nowrap">
-                        <a className="nav-link px-3" href="#" onClick={this.handleClick}>Sign out</a>
+                        <Link to={'/profile'} className="p-2 text-white text-decoration-none">{this.state.user.first_name} {this.state.user.last_name}</Link>
+                        <a className="p-2 text-white text-decoration-none" href="#" onClick={this.handleClick}>Sign out</a>
                     </div>
                 </div>
             </header>
