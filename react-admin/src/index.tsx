@@ -4,16 +4,22 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from "axios";
+import configureStore from "./redux/configureStore";
+import {Provider} from "react-redux";
 
 axios.defaults.baseURL = 'https://backend.micro.test/api/';
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+
+const store = configureStore();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+      <Provider store={store}>
+          <App />
+      </Provider>
   </React.StrictMode>
 );
 
