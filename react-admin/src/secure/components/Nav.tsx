@@ -1,23 +1,15 @@
 import React, {Component} from 'react';
 import axios from "axios";
 import {Link, Navigate} from 'react-router-dom';
-import {User} from "../../classes/User";
+import {connect} from "react-redux";
 
 class Nav extends Component<any, any> {
     constructor(props: any) {
         super(props);
 
         this.state = {
-            user: new User(),
             redirect: false
         }
-    }
-
-    componentDidMount = async () => {
-        const response = await axios.get('user');
-        this.setState({
-            user: response.data.data
-        });
     }
 
     handleClick = () => {
@@ -27,6 +19,7 @@ class Nav extends Component<any, any> {
             redirect: true
         });
     }
+
     render() {
         if (this.state.redirect) {
             return <Navigate to={'/login'} />;
@@ -42,7 +35,7 @@ class Nav extends Component<any, any> {
                 </button>
                 <div className="navbar-nav">
                     <div className="nav-item text-nowrap">
-                        <Link to={'/profile'} className="p-2 text-white text-decoration-none">{this.state.user.first_name} {this.state.user.last_name}</Link>
+                        <Link to={'/profile'} className="p-2 text-white text-decoration-none">{this.props.user.first_name} {this.props.user.last_name}</Link>
                         <a className="p-2 text-white text-decoration-none" href="#" onClick={this.handleClick}>Sign out</a>
                     </div>
                 </div>
@@ -51,4 +44,5 @@ class Nav extends Component<any, any> {
     }
 }
 
-export default Nav;
+// @ts-ignore
+export default connect(state => ({user: state.user}))(Nav);
