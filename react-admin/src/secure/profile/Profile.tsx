@@ -38,7 +38,14 @@ class Profile extends Component<any, any> {
         });
 
         const user: User = response.data;
-        this.props.setUser(user);
+        this.props.setUser(new User(
+            user.id,
+            user.first_name,
+            user.last_name,
+            user.email,
+            user.role,
+            user.permissions
+        ));
     }
 
     updatePassword = async (e: SyntheticEvent) => {
@@ -105,3 +112,4 @@ class Profile extends Component<any, any> {
 
 // @ts-ignore
 export default connect(state => ({user: state.user}), dispatch => ({setUser: user => dispatch(setUser(user))}))(Profile);
+// @todo: export Wrapper mapStateToProps and mapDispatchToProps

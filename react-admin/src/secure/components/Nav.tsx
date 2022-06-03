@@ -35,7 +35,7 @@ class Nav extends Component<any, any> {
                 </button>
                 <div className="navbar-nav">
                     <div className="nav-item text-nowrap">
-                        <Link to={'/profile'} className="p-2 text-white text-decoration-none">{this.props.user.first_name} {this.props.user.last_name}</Link>
+                        <Link to={'/profile'} className="p-2 text-white text-decoration-none">{this.props.user.name}</Link>
                         <a className="p-2 text-white text-decoration-none" href="#" onClick={this.handleClick}>Sign out</a>
                     </div>
                 </div>
