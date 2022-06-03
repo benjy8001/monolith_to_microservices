@@ -3,7 +3,7 @@ import Wrapper from "../Wrapper";
 import axios from "axios";
 import {User} from "../../classes/User";
 import {connect} from "react-redux";
-import setUser from "../../redux/actions/setUserAction";
+import {mapDispatchToProps, mapStateToProps} from "../../redux/mapUser";
 
 class Profile extends Component<any, any> {
     private first_name: string;
@@ -110,6 +110,4 @@ class Profile extends Component<any, any> {
     }
 }
 
-// @ts-ignore
-export default connect(state => ({user: state.user}), dispatch => ({setUser: user => dispatch(setUser(user))}))(Profile);
-// @todo: export Wrapper mapStateToProps and mapDispatchToProps
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

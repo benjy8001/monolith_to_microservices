@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from "axios";
 import {Link, Navigate} from 'react-router-dom';
 import {connect} from "react-redux";
+import {mapStateToProps} from "../../redux/mapUser";
 
 class Nav extends Component<any, any> {
     constructor(props: any) {
@@ -44,5 +45,4 @@ class Nav extends Component<any, any> {
     }
 }
 
-// @ts-ignore
-export default connect(state => ({user: state.user}))(Nav);
+export default connect(mapStateToProps)(Nav);

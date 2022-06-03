@@ -5,7 +5,7 @@ import axios from "axios";
 import {Navigate} from "react-router-dom";
 import {connect} from "react-redux";
 import {User} from "../classes/User";
-import setUser from "../redux/actions/setUserAction";
+import {mapDispatchToProps, mapStateToProps} from "../redux/mapUser";
 
 class Wrapper extends Component<PropsWithChildren<any>, any> {
     constructor(props: any) {
@@ -57,16 +57,5 @@ class Wrapper extends Component<PropsWithChildren<any>, any> {
     }
 }
 
-const mapStateToProps = (state: {user: User}) => {
-    return {
-        user: state.user
-    };
-}
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-    return {
-        setUser: (user: User) => dispatch(setUser(user))
-    }
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wrapper);
