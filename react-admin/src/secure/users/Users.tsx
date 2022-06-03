@@ -2,11 +2,13 @@ import React, {Component} from "react";
 import Wrapper from "../Wrapper";
 import axios from "axios";
 import {User} from "../../classes/User";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import Paginator from "../components/Paginator";
 import Deleter from "../components/Deleter";
+import {connect} from "react-redux";
+import {mapStateToProps} from "../../redux/mapUser";
 
-class Users extends Component<any, any> {
+class Users extends Component<{ user: User }, any> {
     private page: number;
     private last_page: number;
 
@@ -39,14 +41,32 @@ class Users extends Component<any, any> {
         });
     }
 
+    action = (id: number) => {
+        if (this.props.user.canEdit('users')) {
+            return (
+                <div className="btn-group mr-2">
+                    <Link to={`/users/${id}/edit`} className="btn btn-sm btn-outline-secondary">Edit</Link>
+                    <Deleter id={id} endpoint={'users'} handleDelete={this.handleDelete} />
+                </div>
+            );
+        }
+    }
+
     render() {
-        return (
-            <Wrapper>
+        let addButton = null;
+        if (this.props.user.canView('users')) {
+            addButton = (
                 <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 col-md-3 border-bottom">
                     <div className="btn-toolbar mb-2 mb-md-0">
                         <Link to={'/users/create'} className="btn btn-sm btn-outline-secondary">Add</Link>
                     </div>
                 </div>
+            );
+        }
+
+        return (
+            <Wrapper>
+                {addButton}
 
                 <h2>Users list</h2>
                 <div className="table-responsive">
@@ -70,10 +90,7 @@ class Users extends Component<any, any> {
                                         <td>{user.email}</td>
                                         <td>{user.role.name}</td>
                                         <td>
-                                            <div className="btn-group mr-2">
-                                                <Link to={`/users/${user.id}/edit`} className="btn btn-sm btn-outline-secondary">Edit</Link>
-                                                <Deleter id={user.id} endpoint={'users'} handleDelete={this.handleDelete} />
-                                            </div>
+                                            {this.action(user.id)}
                                         </td>
                                     </tr>
                                 )
@@ -89,4 +106,4 @@ class Users extends Component<any, any> {
     }
 }
 
-export default Users;
+export default connect(mapStateToProps)(Users);

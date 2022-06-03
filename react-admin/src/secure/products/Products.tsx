@@ -5,8 +5,11 @@ import axios from "axios";
 import {Product} from "../../classes/Product";
 import Paginator from "../components/Paginator";
 import Deleter from "../components/Deleter";
+import {connect} from "react-redux";
+import {mapStateToProps} from "../../redux/mapUser";
+import {User} from "../../classes/User";
 
-class Products extends Component<any, any> {
+class Products extends Component<{ user: User }, any> {
     private page: number;
     private last_page: number;
 
@@ -39,13 +42,32 @@ class Products extends Component<any, any> {
         });
     }
 
-    render() {
-        return (
-            <Wrapper><div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 col-md-3 border-bottom">
-                <div className="btn-toolbar mb-2 mb-md-0">
-                    <Link to={'/products/create'} className="btn btn-sm btn-outline-secondary">Add</Link>
+    action = (id: number) => {
+        if (this.props.user.canEdit('products')) {
+            return (
+                <div className="btn-group mr-2">
+                    <Link to={`/products/${id}/edit`} className="btn btn-sm btn-outline-secondary">Edit</Link>
+                    <Deleter id={id} endpoint={'products'} handleDelete={this.handleDelete} />
                 </div>
-            </div>
+            );
+        }
+    }
+
+    render() {
+        let addButton = null;
+        if (this.props.user.canView('products')) {
+            addButton = (
+                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 col-md-3 border-bottom">
+                    <div className="btn-toolbar mb-2 mb-md-0">
+                        <Link to={'/products/create'} className="btn btn-sm btn-outline-secondary">Add</Link>
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <Wrapper>
+                {addButton}
 
                 <h2>Roles list</h2>
                 <div className="table-responsive">
@@ -71,10 +93,7 @@ class Products extends Component<any, any> {
                                         <td>{product.description}</td>
                                         <td>{product.price}</td>
                                         <td>
-                                            <div className="btn-group mr-2">
-                                                <Link to={`/products/${product.id}/edit`} className="btn btn-sm btn-outline-secondary">Edit</Link>
-                                                <Deleter id={product.id} endpoint={'products'} handleDelete={this.handleDelete} />
-                                            </div>
+                                            {this.action(product.id)}
                                         </td>
                                     </tr>
                                 )
@@ -90,4 +109,4 @@ class Products extends Component<any, any> {
     }
 }
 
-export default Products;
+export default connect(mapStateToProps)(Products);
