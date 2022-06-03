@@ -8,7 +8,7 @@ import configureStore from "./redux/configureStore";
 import {Provider} from "react-redux";
 
 axios.defaults.baseURL = 'https://backend.micro.test/api/';
-axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+axios.defaults.withCredentials = true;
 
 const store = configureStore();
 

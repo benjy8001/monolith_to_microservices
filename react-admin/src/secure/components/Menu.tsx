@@ -67,7 +67,7 @@ class Menu extends Component<{ user: User }, any> {
         this.menuItems.forEach(item => {
             if (this.props.user.canView(item.name.toLowerCase())) {
                 menu.push(
-                    <li className="nav-item">
+                    <li className="nav-item" key={item.name.toLowerCase()}>
                         <NavLink to={item.link} className="nav-link" aria-current="page">
                             {item.icon}
                             {item.name}
@@ -81,7 +81,7 @@ class Menu extends Component<{ user: User }, any> {
             <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                 <div className="position-sticky pt-3">
                     <ul className="nav flex-column">
-                        <li className="nav-item">
+                        <li className="nav-item" key="dashboard">
                             <NavLink to={'/'} className="nav-link" aria-current="page">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                       fill="none"

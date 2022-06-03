@@ -13,9 +13,8 @@ class Nav extends Component<any, any> {
         }
     }
 
-    handleClick = () => {
-        localStorage.clear();
-        axios.defaults.headers.common['Authorization'] = '';
+    handleClick = async () => {
+        await axios.post('logout', {});
         this.setState({
             redirect: true
         });
