@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Influencer\ProductController as InfluencerProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,4 +43,10 @@ Route::group([
     Route::apiResource('products', ProductController::class);
     Route::apiResource('orders', OrderController::class)->only('index', 'show');
     Route::apiResource('permissions', PermissionController::class)->only('index');
+});
+
+Route::group([
+    'prefix' => 'influencer',
+], function () {
+    Route::get('products', [InfluencerProductController::class, 'index']);
 });
