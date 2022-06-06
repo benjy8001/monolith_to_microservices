@@ -1,4 +1,4 @@
-GET https://backend.micro.test/api/influencer/products
+GET https://backend.micro.test/api/influencer/products?s=dolorem
 Content-Type: application/json
 Accept: application/json
 
