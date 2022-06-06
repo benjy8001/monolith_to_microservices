@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Response as ResponseFacade;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class OrderController extends Controller
+class OrderController
 {
     /**
      * @return AnonymousResourceCollection
