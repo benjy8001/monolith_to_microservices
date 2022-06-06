@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateInfoRequest;
+use App\Http\Requests\UpdatePasswordRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
@@ -57,5 +61,45 @@ class AuthController extends Controller
         );
 
         return response($user, Response::HTTP_CREATED);
+    }
+
+    /**
+     * @return UserResource
+     */
+    public function user(): UserResource
+    {
+        $user = Auth::user();
+
+        return (new UserResource($user))->additional([
+            'data' => [
+                'permissions' => $user->permissions(),
+            ]
+        ]);
+    }
+
+    /**
+     * @param UpdateInfoRequest $request
+     * @return Response
+     */
+    public function updateInfo(UpdateInfoRequest $request): Response
+    {
+        $user = Auth::user();
+        $user->update($request->only('first_name', 'last_name', 'email'));
+
+        return response(new UserResource($user), Response::HTTP_ACCEPTED);
+    }
+
+    /**
+     * @param UpdatePasswordRequest $request
+     * @return Response
+     */
+    public function updatePassword(UpdatePasswordRequest $request): Response
+    {
+        $user = Auth::user();
+        $user->update([
+            'password' => Hash::make($request->input('password')),
+        ]);
+
+        return response(new UserResource($user), Response::HTTP_ACCEPTED);
     }
 }
