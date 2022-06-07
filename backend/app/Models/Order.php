@@ -50,6 +50,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereZip($value)
  * @property string|null $transaction_id
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTransactionId($value)
+ * @property-read int $admin_total
+ * @property-read int $influencer_total
  */
 class Order extends Model
 {

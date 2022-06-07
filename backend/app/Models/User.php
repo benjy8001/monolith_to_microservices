@@ -42,6 +42,7 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
  * @property int $is_influencer
  * @method static \Illuminate\Database\Eloquent\Builder|User whereIsInfluencer($value)
+ * @property-read int $revenue
  */
 class User extends Authenticatable
 {
@@ -99,5 +100,16 @@ class User extends Authenticatable
     public function isInfluencer(): bool
     {
         return 1 === $this->is_influencer;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRevenueAttribute(): int
+    {
+        $orders = Order::where('user_id', $this->id)->where('complete', 1)->get();
+        return $orders->sum(function (Order $order) {
+            return $order->influencer_total;
+        });
     }
 }
