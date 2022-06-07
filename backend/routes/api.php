@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Checkout\LinkController as CheckoutLinkController;
+use App\Http\Controllers\Checkout\OrderController as CheckoutOrderController;
 use App\Http\Controllers\Influencer\LinkController;
 use App\Http\Controllers\Influencer\ProductController as InfluencerProductController;
 use Illuminate\Support\Facades\Route;
@@ -71,4 +72,5 @@ Route::group([
     'prefix' => 'checkout',
 ], function () {
     Route::get('links/{code}', [CheckoutLinkController::class, 'show']);
+    Route::post('orders', [CheckoutOrderController::class, 'store']);
 });

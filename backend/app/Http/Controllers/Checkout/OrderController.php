@@ -1,18 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Influencer;
+namespace App\Http\Controllers\Checkout;
 
 use App\Models\Link;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController
 {
+    /**
+     * @param Request $request
+     * @return Order
+     */
     public function store(Request $request)
     {
         $link = Link::whereCode($request->input('code'))->first();
+
+        DB::beginTransaction();
         $order = new Order();
         $order->first_name = $request->input('first_name');
         $order->last_name = $request->input('last_name');
@@ -38,5 +45,8 @@ class OrderController
             $orderItem->admin_revenue = (0.9 * ($product->price * $item['quantity']));
             $orderItem->save();
         }
+        DB::commit();
+
+        return $order;
     }
 }

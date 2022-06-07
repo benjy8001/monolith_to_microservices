@@ -6,6 +6,33 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpI
 name=test
 
 ###
+POST https://backend.micro.test/api/checkout/orders
+Content-Type: application/json
+Accept: application/json
+
+{
+  "first_name": "a",
+  "last_name": "a",
+  "email": "a@a.com",
+  "code": "QQ8kIq",
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 1
+    },
+    {
+      "product_id": 2,
+      "quantity": 2
+    }
+  ],
+  "address": "adress",
+  "address2": "",
+  "city": "City",
+  "country": "Country",
+  "zip": "0000"
+}
+
+###
 POST https://backend.micro.test/api/influencer/links
 Content-Type: application/json
 Accept: application/json
