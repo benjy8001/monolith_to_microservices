@@ -12,6 +12,7 @@ use App\Http\Controllers\Checkout\LinkController as CheckoutLinkController;
 use App\Http\Controllers\Checkout\OrderController as CheckoutOrderController;
 use App\Http\Controllers\Influencer\LinkController;
 use App\Http\Controllers\Influencer\ProductController as InfluencerProductController;
+use App\Http\Controllers\Influencer\StatsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +65,7 @@ Route::group([
         'middleware' => ['auth:api', 'scope:influencer'],
     ], function () {
         Route::post('links', [LinkController::class, 'store']);
+        Route::get('stats', [StatsController::class, 'index']);
     });
 });
 
