@@ -8,7 +8,9 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use Cartalyst\Stripe\Stripe;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController
@@ -90,6 +92,17 @@ class OrderController
 
         $order->complete = 1;
         $order->save();
+
+        Mail::send('mails/admin', ['order' => $order], function (Message $message) {
+            $message->to('admin@admin.com');
+            $message->subject('A new order has been completed!');
+        });
+
+        Mail::send('mails/influencer', ['order' => $order], function (Message $message) use ($order) {
+            $message->to($order->influencer_email);
+            $message->subject('A new order has been completed!');
+        });
+
         return response([
             'message' => 'success'
         ], Response::HTTP_OK);

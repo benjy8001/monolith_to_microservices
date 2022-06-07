@@ -74,6 +74,26 @@ class Order extends Model
     }
 
     /**
+     * @return int
+     */
+    public function getAdminTotalAttribute(): int
+    {
+        return $this->orderItems->sum(function (OrderItem $orderItem) {
+            return $orderItem->admin_revenue;
+        });
+    }
+
+    /**
+     * @return int
+     */
+    public function getInfluencerTotalAttribute(): int
+    {
+        return $this->orderItems->sum(function (OrderItem $orderItem) {
+            return $orderItem->influencer_revenue;
+        });
+    }
+
+    /**
      * @return string
      */
     public function getNameAttribute(): string
