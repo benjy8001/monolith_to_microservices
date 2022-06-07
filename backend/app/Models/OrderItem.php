@@ -29,6 +29,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @mixin \Eloquent
  * @property-read \App\Models\Order $order
  * @method static \Database\Factories\OrderItemFactory factory(...$parameters)
+ * @property string $influencer_revenue
+ * @property string $admin_revenue
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereAdminRevenue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderItem whereInfluencerRevenue($value)
  */
 class OrderItem extends Model
 {
