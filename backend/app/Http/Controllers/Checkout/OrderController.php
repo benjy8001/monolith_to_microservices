@@ -9,6 +9,7 @@ use App\Models\Product;
 use Cartalyst\Stripe\Stripe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderController
 {
@@ -73,5 +74,24 @@ class OrderController
         DB::commit();
 
         return $source;
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function confirm(Request $request): Response
+    {
+        if (!$order = Order::whereTransactionId($request->input('source'))->first()) {
+            return response([
+                'error' => 'Order not found!'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $order->complete = 1;
+        $order->save();
+        return response([
+            'message' => 'success'
+        ], Response::HTTP_OK);
     }
 }
