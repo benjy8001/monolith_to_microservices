@@ -6,6 +6,7 @@ use App\Models\Link;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Cartalyst\Stripe\Stripe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +14,8 @@ class OrderController
 {
     /**
      * @param Request $request
-     * @return Order
+     * @return mixed
+     * @throws \Throwable
      */
     public function store(Request $request)
     {
@@ -34,6 +36,7 @@ class OrderController
         $order->zip = $request->input('zip');
         $order->save();
 
+        $lineItems = [];
         foreach ($request->input('items') as $item) {
             $product = Product::find($item['product_id']);
             $orderItem = new OrderItem();
@@ -44,9 +47,31 @@ class OrderController
             $orderItem->influencer_revenue = (0.1 * ($product->price * $item['quantity']));
             $orderItem->admin_revenue = (0.9 * ($product->price * $item['quantity']));
             $orderItem->save();
+
+            $lineItems[] = [
+                'name' => $product->title,
+                'description' => $product->description,
+                'images' => [
+                    $product->image,
+                ],
+                'amount' => 100 * $product->price,
+                'currency' => 'eur',
+                'quantity' => $orderItem->quantity,
+            ];
         }
+
+        $stripe = Stripe::make(env('STRIPE_SECRET'));
+        $source = $stripe->checkout()->sessions()->create([
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
+            'success_url' => sprintf('%s/success?source={CHECKOUT_SESSION_ID}', env('CHECKOUT_URL')),
+            'cancel_url' => sprintf('%s/error', env('CHECKOUT_URL')),
+        ]);
+        $order->transaction_id = $source['id'];
+        $order->save();
+
         DB::commit();
 
-        return $order;
+        return $source;
     }
 }
