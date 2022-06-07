@@ -8,13 +8,12 @@ use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthController extends Controller
+class AuthController
 {
     /**
      * @param Request $request
@@ -57,6 +56,7 @@ class AuthController extends Controller
             [
                 'password' => Hash::make($request->input('password')),
                 'role_id' => 1,
+                'is_influencer' => 1,
             ]
         );
 
@@ -70,7 +70,12 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        return (new UserResource($user))->additional([
+        $resource = new UserResource($user);
+        if ($user->isInfluencer()) {
+            return $resource;
+        }
+
+        return $resource->additional([
             'data' => [
                 'permissions' => $user->permissions(),
             ]

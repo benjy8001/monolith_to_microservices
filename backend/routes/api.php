@@ -28,7 +28,6 @@ Route::post('register', [AuthController::class, 'register']);
 
 Route::group([
     'middleware' => 'auth:api',
-    'prefix' => 'admin',
 ], function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::put('users/info', [AuthController::class, 'updateInfo']);
