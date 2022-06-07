@@ -1,3 +1,8 @@
+GET https://backend.micro.test/api/checkout/links/QQ8kIq
+Content-Type: application/json
+Accept: application/json
+
+###
 GET https://backend.micro.test/api/influencer/products?s=dolorem
 Content-Type: application/json
 Accept: application/json
