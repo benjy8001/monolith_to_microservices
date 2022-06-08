@@ -16,8 +16,7 @@ class ProductController
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        return Cache::remember('products', 30, function () use ($request) {
-            sleep(5);
+        return Cache::remember('products', 60*30, function () use ($request) {
             $query = Product::query();
             if ($s = $request->input('s')) {
                 $query->whereRaw(sprintf("title LIKE '%%%s%%'", $s))
