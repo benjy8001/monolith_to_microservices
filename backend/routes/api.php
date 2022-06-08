@@ -26,44 +26,41 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Common
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
-
-Route::group([
-    'middleware' => 'auth:api',
-], function () {
-    Route::get('user', [AuthController::class, 'user']);
-    Route::put('users/info', [AuthController::class, 'updateInfo']);
-    Route::put('users/password', [AuthController::class, 'updatePassword']);
-});
-
 // Admin
-Route::group([
-    'middleware' => ['auth:api', 'scope:admin'],
-    'prefix' => 'admin',
-], function () {
-    Route::post('logout', [AuthController::class, 'logout']);
+Route::prefix('admin')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
 
-    Route::get('chart', [DashboardController::class, 'chart']);
-    Route::post('upload', [ImageController::class, 'upload']);
-    Route::get('export', [OrderController::class, 'export']);
+    Route::middleware(['auth:api', 'scope:admin'])->group(function () {
+        Route::get('user', [AuthController::class, 'user']);
+        Route::put('users/info', [AuthController::class, 'updateInfo']);
+        Route::put('users/password', [AuthController::class, 'updatePassword']);
+        Route::post('logout', [AuthController::class, 'logout']);
 
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('roles', RoleController::class);
-    Route::apiResource('products', ProductController::class);
-    Route::apiResource('orders', OrderController::class)->only('index', 'show');
-    Route::apiResource('permissions', PermissionController::class)->only('index');
+        Route::get('chart', [DashboardController::class, 'chart']);
+        Route::post('upload', [ImageController::class, 'upload']);
+        Route::get('export', [OrderController::class, 'export']);
+
+        Route::apiResource('users', UserController::class);
+        Route::apiResource('roles', RoleController::class);
+        Route::apiResource('products', ProductController::class);
+        Route::apiResource('orders', OrderController::class)->only('index', 'show');
+        Route::apiResource('permissions', PermissionController::class)->only('index');
+    });
 });
 
 // Influencer
-Route::group([
-    'prefix' => 'influencer',
-], function () {
+Route::prefix('influencer')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
     Route::get('products', [InfluencerProductController::class, 'index']);
-    Route::group([
-        'middleware' => ['auth:api', 'scope:influencer'],
-    ], function () {
+
+    Route::middleware(['auth:api', 'scope:influencer'])->group(function () {
+        Route::get('user', [AuthController::class, 'user']);
+        Route::put('users/info', [AuthController::class, 'updateInfo']);
+        Route::put('users/password', [AuthController::class, 'updatePassword']);
+        Route::post('logout', [AuthController::class, 'logout']);
+
         Route::post('links', [LinkController::class, 'store']);
         Route::get('stats', [StatsController::class, 'index']);
         Route::get('rankings', [StatsController::class, 'rankings']);
@@ -71,9 +68,7 @@ Route::group([
 });
 
 // Checkout
-Route::group([
-    'prefix' => 'checkout',
-], function () {
+Route::prefix('checkout')->group(function () {
     Route::get('links/{code}', [CheckoutLinkController::class, 'show']);
     Route::post('orders', [CheckoutOrderController::class, 'store']);
     Route::post('orders/confirm', [CheckoutOrderController::class, 'confirm']);
