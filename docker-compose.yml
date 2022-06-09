@@ -1,17 +1,17 @@
 version: '3.7'
 
 services:
-    frontend:
+    admin-frontend:
         container_name: admin_react
         build:
             context: ./react-admin
             dockerfile: Dockerfile-frontend
         volumes:
-            - frontend_sources:/usr/src/app:rw
+            - frontend_admin_sources:/usr/src/app:rw
         environment:
             - XDEBUG_CONFIG=remote_host=172.0.0.1 remote_enable=on
             - COMPOSER_AUTH=${COMPOSER_AUTH}
-            - VIRTUAL_HOST=frontend.micro.test
+            - VIRTUAL_HOST=frontend-admin.micro.test
             - VIRTUAL_PORT=3000
         #ports:
         #    - "81:3000"
@@ -21,6 +21,32 @@ services:
             - backend:admin_api
         env_file:
             - react-admin/.env
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1M"
+                max-file: "5"
+
+    influencer-frontend:
+        container_name: influencer_react
+        build:
+            context: ./react-influencer
+            dockerfile: Dockerfile-frontend
+        volumes:
+            - frontend_influencer_sources:/usr/src/app:rw
+        environment:
+            - XDEBUG_CONFIG=remote_host=172.0.0.1 remote_enable=on
+            - COMPOSER_AUTH=${COMPOSER_AUTH}
+            - VIRTUAL_HOST=frontend-influencer.micro.test
+            - VIRTUAL_PORT=3000
+        #ports:
+        #    - "82:3000"
+        depends_on:
+            - backend
+        links:
+            - backend:admin_api
+        env_file:
+            - react-influencer/.env
         logging:
             driver: "json-file"
             options:
@@ -83,12 +109,18 @@ services:
 
 volumes:
     database: ~
-    frontend_sources:
+    frontend_admin_sources:
         driver: local
         driver_opts:
             o: bind
             type: none
             device: $PWD/react-admin
+    frontend_influencer_sources:
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: $PWD/react-influencer
     backend_sources:
         driver: local
         driver_opts:
