@@ -2,22 +2,21 @@ import React, {PropsWithChildren} from 'react';
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {mapStateToProps} from "../redux/mapUser";
+import axios from "axios";
 
 const Nav = (props: PropsWithChildren<any>) => {
-    let menu;
+    let menu= (
+        <Link to={'/login'} className="btn btn-outline-primary">Login</Link>
+    );
 
-    if (props.user) {
+    if (props.user?.id) {
         menu = (
             <>
                 <div className="nav-item text-nowrap d-flex">
-                    <Link to={'/login'} onClick={() => localStorage.clear()} className="p-2 text-dark">Logout</Link>
+                    <Link to={'/login'} onClick={async () => await axios.post('logout', {})} className="p-2 text-dark">Logout</Link>
                     <Link to={'/profile'} className="btn btn-outline-primary">{props.user.first_name}</Link>
                 </div>
             </>
-        );
-    } else {
-        menu = (
-            <Link to={'/login'} className="btn btn-outline-primary">Login</Link>
         );
     }
 
