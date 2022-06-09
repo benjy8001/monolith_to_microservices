@@ -3,11 +3,17 @@ import Wrapper from "./Wrapper";
 import axios from "axios";
 import {Product} from "../classes/Product";
 import Header from "../components/Header";
+import constants from "../constants";
 
 const Main = () => {
     const [products, setProducts] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [selected, setSelected] = useState([]);
+    const [notify, setNotify] = useState({
+        show: false,
+        error: false,
+        message: ''
+    });
 
     useEffect(() => {
         (
@@ -28,15 +34,64 @@ const Main = () => {
         setSelected([...selected, id]);
     }
 
+    const generate = async () => {
+        try {
+            const response = await axios.post('links', {
+                products: selected
+            });
+
+            setNotify({
+                show: true,
+                error: false,
+                message: `Link generated: ${constants.CHECKOUT_URL}/${response.data.data.code}`
+            });
+        } catch (e) {
+            setNotify({
+                show: true,
+                error: true,
+                message: 'You should be logged in to generate a link!'
+            });
+        } finally {
+            setTimeout(() => {
+                setNotify({
+                    show: false,
+                    error: false,
+                    message: ''
+                });
+            }, 2000);
+        }
+    }
+
+    let button, info;
+    if (selected.length > 0) {
+        button = (
+            <div className="input-group-append">
+                <button className="btn btn-info" onClick={generate}>Generate Link</button>
+            </div>
+        );
+    }
+    if (notify.show) {
+        info = (
+            <div className="col-md-12 md-4">
+                <div className={notify.error ? "alert alert-danger": "alert alert-info"} role="alert">
+                    {notify.message}
+                </div>
+            </div>
+        );
+    }
+
     return (
         <Wrapper>
             <Header />
             <div className="album py-5 bg-light">
                 <div className="container">
                     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                        {info}
+
                         <div className="col-md-12 mb-4 input-group">
                             <input type="text" className="form-control" placeholder="Search"
                                    onKeyUp={e => setSearchText((e.target as HTMLInputElement).value)} />
+                            {button}
                         </div>
                         {products.map((product: Product) => {
                             return (
