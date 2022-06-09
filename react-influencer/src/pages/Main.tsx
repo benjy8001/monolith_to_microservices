@@ -1,37 +1,46 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import Wrapper from "./Wrapper";
+import axios from "axios";
+import {Product} from "../classes/Product";
 
-class Main extends Component {
-    render() {
-        return (
-            <Wrapper>
-                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    <div className="col">
-                        <div className="card shadow-sm">
-                            <svg className="bd-placeholder-img card-img-top" width="100%" height="225"
-                                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c"/>
-                                <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                            </svg>
+const Main = () => {
+    const [products, setProducts] = useState([]);
+    const [searchText, setSearchText] = useState('');
 
-                            <div className="card-body">
-                                <p className="card-text">This is a wider card with supporting text below as a natural lead-in to
-                                    additional content. This content is a little bit longer.</p>
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <div className="btn-group">
-                                        <button type="button" className="btn btn-sm btn-outline-secondary">View</button>
-                                        <button type="button" className="btn btn-sm btn-outline-secondary">Edit</button>
+    useEffect(() => {
+        (
+            async () => {
+                const response = await axios.get(`products?s=${searchText}`);
+                setProducts(response.data.data);
+            }
+        )();
+    }, [searchText]);
+
+    return (
+        <Wrapper>
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                <div className="col-md-12 mb-4 input-group">
+                    <input type="text" className="form-control" placeholder="Search"
+                        onKeyUp={e => setSearchText((e.target as HTMLInputElement).value)} />
+                </div>
+                {products.map((product: Product) => {
+                    return (
+                        <div className="col" key={product.id}>
+                            <div className="card shadow-sm">
+                                <img src={product.image} height="200" />
+                                <div className="card-body">
+                                    <p className="card-text">{product.title}</p>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <small className="text-muted">{product.price}€</small>
                                     </div>
-                                    <small className="text-muted">9 mins</small>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </Wrapper>
-        );
-    }
+                    );
+                })}
+            </div>
+        </Wrapper>
+    );
 }
 
 export default Main;
