@@ -13,6 +13,7 @@ const Nav = (props: PropsWithChildren<any>) => {
         menu = (
             <>
                 <div className="nav-item text-nowrap d-flex">
+                    <Link to={'/stats'} className="p-2 text-dark">Stats</Link>
                     <Link to={'/rankings'} className="p-2 text-dark">Rankings</Link>
                     <Link to={'/login'} onClick={async () => await axios.post('logout', {})} className="p-2 text-dark">Logout</Link>
                     <Link to={'/profile'} className="btn btn-outline-primary">{props.user.first_name}</Link>

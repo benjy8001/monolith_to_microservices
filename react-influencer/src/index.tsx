@@ -6,8 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 import configureStore from "./redux/configureStore";
 import {Provider} from "react-redux";
+import constants from "./constants";
 
-axios.defaults.baseURL = 'https://backend.micro.test/api/influencer/';
+axios.defaults.baseURL = constants.BASE_URL;
 axios.defaults.withCredentials = true;
 
 const store = configureStore();
