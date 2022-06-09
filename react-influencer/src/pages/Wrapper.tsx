@@ -30,12 +30,7 @@ const Wrapper = (props: PropsWithChildren<any>) => {
             <>
                 <Nav />
                 <main>
-                    <Header />
-                    <div className="album py-5 bg-light">
-                        <div className="container">
-                            {props.children}
-                        </div>
-                    </div>
+                    {props.children}
                 </main>
             </>
         );
