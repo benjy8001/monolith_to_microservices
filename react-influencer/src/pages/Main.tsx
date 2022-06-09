@@ -7,6 +7,7 @@ import Header from "../components/Header";
 const Main = () => {
     const [products, setProducts] = useState([]);
     const [searchText, setSearchText] = useState('');
+    const [selected, setSelected] = useState([]);
 
     useEffect(() => {
         (
@@ -16,6 +17,16 @@ const Main = () => {
             }
         )();
     }, [searchText]);
+
+    const isSelected = (id: number) => selected.filter(s => s === id).length > 0;
+    const select = (id: number) => {
+        if (isSelected(id)) {
+            setSelected(selected.filter(s => s !== id));
+            return;
+        }
+        // @ts-ignore
+        setSelected([...selected, id]);
+    }
 
     return (
         <Wrapper>
@@ -30,7 +41,8 @@ const Main = () => {
                         {products.map((product: Product) => {
                             return (
                                 <div className="col" key={product.id}>
-                                    <div className="card shadow-sm">
+                                    <div className={isSelected(product.id) ? "card shadow-sm selected" : "card shadow-sm"}
+                                    onClick={() => select(product.id)} >
                                         <img src={product.image} height="200" />
                                         <div className="card-body">
                                             <p className="card-text">{product.title}</p>
