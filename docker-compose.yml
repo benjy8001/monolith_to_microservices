@@ -141,19 +141,19 @@ volumes:
         driver_opts:
             o: bind
             type: none
-            device: $PWD/react-admin
+            device: $PWD/frontend/react-admin
     frontend_influencer_sources:
         driver: local
         driver_opts:
             o: bind
             type: none
-            device: $PWD/react-influencer
+            device: $PWD/frontend/react-influencer
     frontend_checkout_sources:
         driver: local
         driver_opts:
             o: bind
             type: none
-            device: $PWD/next-checkout
+            device: $PWD/frontend/next-checkout
     backend_sources:
         driver: local
         driver_opts:
