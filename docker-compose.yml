@@ -53,6 +53,33 @@ services:
                 max-size: "1M"
                 max-file: "5"
 
+
+    checkout-frontend:
+        container_name: next_checkout
+        build:
+            context: ./next-checkout
+            dockerfile: Dockerfile
+        volumes:
+            - frontend_checkout_sources:/usr/src/app:rw
+        environment:
+            - XDEBUG_CONFIG=remote_host=172.0.0.1 remote_enable=on
+            - COMPOSER_AUTH=${COMPOSER_AUTH}
+            - VIRTUAL_HOST=frontend-checkout.micro.test
+            - VIRTUAL_PORT=3000
+        #ports:
+        #    - "83:3000"
+        depends_on:
+            - backend
+        links:
+            - backend:admin_api
+        env_file:
+            - next-checkout/.env
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1M"
+                max-file: "5"
+
     backend:
         container_name: admin_api
         build:
@@ -121,6 +148,12 @@ volumes:
             o: bind
             type: none
             device: $PWD/react-influencer
+    frontend_checkout_sources:
+        driver: local
+        driver_opts:
+            o: bind
+            type: none
+            device: $PWD/next-checkout
     backend_sources:
         driver: local
         driver_opts:
