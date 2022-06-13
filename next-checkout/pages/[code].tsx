@@ -9,6 +9,7 @@ const Home = () => {
     const {code} = router.query;
     const [user, setUser] = useState(null);
     const [products, setProducts] = useState([]);
+    const [quantities, setQuantities] = useState([]);
 
     useEffect(() => {
         if (undefined !== code) {
@@ -19,10 +20,45 @@ const Home = () => {
 
                     setUser(data.user);
                     setProducts(data.products);
+                    setQuantities(data.products.map(p => {
+                        return {
+                            product_id: p.id,
+                            quantity: 0
+                        };
+                    }));
                 }
             )();
         }
     }, [code]);
+
+    const change = (id: number, quantity: number) => {
+        setQuantities(quantities.map(q => {
+            if (q.product_id === id) {
+                return {
+                    product_id: id,
+                    quantity: quantity
+                };
+            }
+
+            return q;
+        }));
+    }
+
+    const quantity = (id: number) => {
+        const q = quantities.find(q => q.product_id === id);
+
+        return q ? q.quantity : 0;
+    }
+
+    const total = () => {
+        let t = 0;
+        quantities.forEach(q => {
+            const product = products.find(p => p.id === q.product_id);
+            t += q.quantity * product.price;
+        });
+
+        return t;
+    }
 
     return (
       <Wrapper>
@@ -40,18 +76,28 @@ const Home = () => {
                   <ul className="list-group mb-3">
                       {products.map(p => {
                           return (
-                              <li className="list-group-item d-flex justify-content-between lh-sm" key={p.id}>
-                                  <div>
-                                      <h6 className="my-0">{p.title}</h6>
-                                      <small className="text-muted">{p.description}</small>
-                                  </div>
-                                  <span className="text-muted">{p.price}€</span>
-                              </li>
+                              <div key={p.id}>
+                                  <li className="list-group-item d-flex justify-content-between lh-sm">
+                                      <div>
+                                          <h6 className="my-0">{p.title}</h6>
+                                          <small className="text-muted">{p.description}</small>
+                                      </div>
+                                      <span className="text-muted">{p.price}€</span>
+                                  </li>
+                                  <li className="list-group-item d-flex justify-content-between lh-sm">
+                                      <div>
+                                          <h6 className="my-0">Quantity</h6>
+                                      </div>
+                                      <input type="number" min="0" className="text-muted form-control" style={{width: '65px'}}
+                                             defaultValue={quantity(p.id)}
+                                             onChange={e => change(p.id, parseInt(e.target.value))}/>
+                                  </li>
+                              </div>
                           );
                       })}
                       <li className="list-group-item d-flex justify-content-between">
-                          <span>Total (USD)</span>
-                          <strong>$20</strong>
+                          <span>Total (EUR)</span>
+                          <strong>{total()}€</strong>
                       </li>
                   </ul>
               </div>
