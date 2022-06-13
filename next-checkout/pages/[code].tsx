@@ -1,33 +1,54 @@
 import Wrapper from "../components/Wrapper";
 import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import constants from "../constants";
 
 const Home = () => {
     const router = useRouter();
     const {code} = router.query;
+    const [user, setUser] = useState(null);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        if (undefined !== code) {
+            (
+                async () => {
+                    const response = await axios.get(`${constants.BASE_URL}links/${code}`);
+                    const data = response.data.data;
+
+                    setUser(data.user);
+                    setProducts(data.products);
+                }
+            )();
+        }
+    }, [code]);
 
     return (
       <Wrapper>
           <div className="py-5 text-center">
-                  <h2>Checkout form {code}</h2>
-                  <p className="lead">Below is an example form built entirely with Bootstrap’s form controls. Each
-                      required form group has a validation state that can be triggered by attempting to submit the
-                      form without completing it.</p>
+                  <h2>Welcome</h2>
+                  <p className="lead">{user?.first_name} {user?.last_name} has invited you to buy this item(s).</p>
           </div>
 
           <div className="row g-5">
               <div className="col-md-5 col-lg-4 order-md-last">
                   <h4 className="d-flex justify-content-between align-items-center mb-3">
-                      <span className="text-primary">Your cart</span>
-                      <span className="badge bg-primary rounded-pill">3</span>
+                      <span className="text-primary">Products</span>
+                      <span className="badge bg-primary rounded-pill">X</span>
                   </h4>
                   <ul className="list-group mb-3">
-                      <li className="list-group-item d-flex justify-content-between lh-sm">
-                          <div>
-                              <h6 className="my-0">Product name</h6>
-                              <small className="text-muted">Brief description</small>
-                          </div>
-                          <span className="text-muted">$12</span>
-                      </li>
+                      {products.map(p => {
+                          return (
+                              <li className="list-group-item d-flex justify-content-between lh-sm" key={p.id}>
+                                  <div>
+                                      <h6 className="my-0">{p.title}</h6>
+                                      <small className="text-muted">{p.description}</small>
+                                  </div>
+                                  <span className="text-muted">{p.price}€</span>
+                              </li>
+                          );
+                      })}
                       <li className="list-group-item d-flex justify-content-between">
                           <span>Total (USD)</span>
                           <strong>$20</strong>
@@ -35,7 +56,7 @@ const Home = () => {
                   </ul>
               </div>
               <div className="col-md-7 col-lg-8">
-                  <h4 className="mb-3">Billing address</h4>
+                  <h4 className="mb-3">Payment Info</h4>
                   <form className="needs-validation" noValidate>
                       <div className="row g-3">
                           <div className="col-sm-6">
