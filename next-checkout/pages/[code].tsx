@@ -4,12 +4,22 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import constants from "../constants";
 
+declare var Stripe;
+
 const Home = () => {
     const router = useRouter();
     const {code} = router.query;
     const [user, setUser] = useState(null);
     const [products, setProducts] = useState([]);
     const [quantities, setQuantities] = useState([]);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
+    const [address2, setAddress2] = useState('');
+    const [country, setCountry] = useState('');
+    const [city, setCity] = useState('');
+    const [zip, setZip] = useState('');
 
     useEffect(() => {
         if (undefined !== code) {
@@ -60,6 +70,38 @@ const Home = () => {
         return t;
     }
 
+    const submit = async (e) => {
+        e.preventDefault();
+        console.log({
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            address: address,
+            address2: address2,
+            country: country,
+            city: city,
+            zip: zip,
+            code: code,
+            items: quantities
+        });
+        const response = await axios.post(`${constants.BASE_URL}orders`, {
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            address: address,
+            address2: address2,
+            country: country,
+            city: city,
+            zip: zip,
+            code: code,
+            items: quantities
+        });
+        const stripe = new Stripe(constants.STRIPE_KEY);
+        stripe.redirectToCheckout({
+            sessionId: response.data.id
+        });
+    }
+
     return (
       <Wrapper>
           <div className="py-5 text-center">
@@ -103,28 +145,33 @@ const Home = () => {
               </div>
               <div className="col-md-7 col-lg-8">
                   <h4 className="mb-3">Payment Info</h4>
-                  <form className="needs-validation" noValidate>
+                  <form className="needs-validation" onSubmit={submit}>
                       <div className="row g-3">
                           <div className="col-sm-6">
                               <label htmlFor="firstName" className="form-label">First name</label>
-                              <input type="text" className="form-control" id="firstName" placeholder="First name" value=""
+                              <input type="text" className="form-control" id="firstName" placeholder="First name"
+                                     onChange={e => setFirstName(e.target.value)}
                                      required />
                           </div>
 
                           <div className="col-sm-6">
                               <label htmlFor="lastName" className="form-label">Last name</label>
-                              <input type="text" className="form-control" id="lastName" placeholder="Last name" value=""
+                              <input type="text" className="form-control" id="lastName" placeholder="Last name"
+                                     onChange={e => setLastName(e.target.value)}
                                      required />
                           </div>
 
                           <div className="col-12">
                               <label htmlFor="email" className="form-label">Email</label>
-                              <input type="email" className="form-control" id="email" placeholder="you@example.com" required />
+                              <input type="email" className="form-control" id="email" placeholder="you@example.com"
+                                     onChange={e => setEmail(e.target.value)}
+                                     required />
                           </div>
 
                           <div className="col-12">
                               <label htmlFor="address" className="form-label">Address</label>
                               <input type="text" className="form-control" id="address" placeholder="1234 Main St"
+                                     onChange={e => setAddress(e.target.value)}
                                      required />
                           </div>
 
@@ -132,27 +179,31 @@ const Home = () => {
                               <label htmlFor="address2" className="form-label">Address 2 <span
                                   className="text-muted">(Optional)</span></label>
                               <input type="text" className="form-control" id="address2"
+                                     onChange={e => setAddress2(e.target.value)}
                                      placeholder="Apartment or suite" />
                           </div>
 
                           <div className="col-md-5">
                               <label htmlFor="country" className="form-label">Country</label>
-                              <input type="text" className="form-control" id="country" placeholder="France" />
+                              <input type="text" className="form-control" id="country" placeholder="France"
+                                     onChange={e => setCountry(e.target.value)} />
                           </div>
 
                           <div className="col-md-4">
                               <label htmlFor="city" className="form-label">City</label>
-                              <input type="text" className="form-control" id="city" placeholder="City" />
+                              <input type="text" className="form-control" id="city" placeholder="City"
+                                     onChange={e => setCity(e.target.value)} />
                           </div>
 
                           <div className="col-md-3">
                               <label htmlFor="zip" className="form-label">Zip</label>
-                              <input type="text" className="form-control" id="zip" placeholder="Zip" required />
+                              <input type="text" className="form-control" id="zip" placeholder="Zip"
+                                     onChange={e => setZip(e.target.value)}
+                                     required />
                           </div>
                       </div>
                       <hr className="my-4" />
-                      <button className="w-100 btn btn-primary btn-lg" type="submit">Continue to
-                          checkout
+                      <button className="w-100 btn btn-primary btn-lg" type="submit">Checkout
                       </button>
                   </form>
               </div>
