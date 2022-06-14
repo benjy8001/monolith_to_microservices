@@ -6,6 +6,9 @@ import constants from "../constants";
 
 declare var Stripe;
 
+//@todo : fix : do not post if quantiy if empty for product
+//@todo : feature : add total number of products
+
 const Home = () => {
     const router = useRouter();
     const {code} = router.query;

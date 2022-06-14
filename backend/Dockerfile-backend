@@ -8,8 +8,10 @@ RUN apt-get update && \
     docker-php-ext-enable xdebug && \
     docker-php-ext-configure gd --with-jpeg --with-freetype && \
     docker-php-ext-install mysqli pdo pdo_mysql mbstring zip gd && \
+    docker-php-ext-install sockets && \
     a2enmod rewrite && \
-    apt-get remove -y $PHPIZE_DEPS
+    apt-get remove -y $PHPIZE_DEPS && \
+    docker-php-source delete
 
 RUN mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini && \
     sed -i 's@^upload_max_filesize = 2M@upload_max_filesize = 30M@g' /usr/local/etc/php/php.ini && \
@@ -22,3 +24,8 @@ RUN set -eux; \
     adduser -D -h /home -s /bin/sh -G bar foo
 
 WORKDIR /var/www/
+
+COPY entrypoint.sh /entrypoint
+RUN chmod +x /entrypoint
+
+ENTRYPOINT ["/entrypoint"]
