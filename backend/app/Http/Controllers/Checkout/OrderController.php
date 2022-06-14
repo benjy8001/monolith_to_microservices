@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Checkout;
 
 use App\Events\OrderCompletedEvent;
+use App\Jobs\OrderCompleted;
 use App\Models\Link;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -95,6 +96,7 @@ class OrderController
         $order->save();
 
         event(new OrderCompletedEvent($order));
+        OrderCompleted::dispatch($order->toArray());
 
         return response([
             'message' => 'success'

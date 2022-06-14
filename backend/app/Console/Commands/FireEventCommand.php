@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Jobs\AdminAdded;
+use App\Jobs\OrderCompleted;
+use App\Models\Order;
 use Illuminate\Console\Command;
 
 class FireEventCommand extends Command
@@ -28,6 +30,9 @@ class FireEventCommand extends Command
      */
     public function handle()
     {
+        $order = Order::find(1);
+        OrderCompleted::dispatch($order->toArray());
+
         AdminAdded::dispatch('a@a.com');
     }
 }

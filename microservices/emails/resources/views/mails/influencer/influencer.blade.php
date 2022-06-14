@@ -1,1 +1,1 @@
-You earn {{$order->influencer_total}}€ from the link #{{$order->code}}.
+You earn {{$influencer_total}}€ from the link #{{$code}}.

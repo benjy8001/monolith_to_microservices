@@ -103,5 +103,18 @@ class Order extends Model
         return sprintf('%s %s', $this->first_name, $this->last_name);
     }
 
-
+    /**
+     * Convert the model instance to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array_merge(parent::toArray(),
+            [
+                'admin_total' => $this->admin_total,
+                'influencer_total' => $this->influencer_total,
+            ]
+        );
+    }
 }
