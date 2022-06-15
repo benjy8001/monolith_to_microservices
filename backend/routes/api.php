@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('user', [AuthController::class, 'user']);
+
 // Admin
 Route::prefix('admin')->group(function () {
 
