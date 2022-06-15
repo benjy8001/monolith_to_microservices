@@ -4,7 +4,7 @@ import axios from "axios";
 import {Role} from "../../classes/Role";
 import {User} from "../../classes/User";
 import {Navigate, useParams} from 'react-router-dom';
-import constants from "../../../../react-influencer/src/constants";
+import constants from "../../constants";
 
 class UserEdit extends Component<{ params: any }, any> {
     private id: number;

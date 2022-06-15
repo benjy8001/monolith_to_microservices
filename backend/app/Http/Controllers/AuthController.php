@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -16,30 +17,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController
 {
+    private $userService;
+
     /**
-     * @param Request $request
-     * @return UserResource|array|mixed
+     * AuthController constructor.
+     * @param UserService $userService
      */
-    public function user(Request $request)
+    public function __construct(UserService $userService)
     {
-        $headers = [
-            'Authorization' => $request->headers->get('Authorization'),
-        ];
-        $response = Http::withHeaders($headers)->get('http://users_api/api/user');
+        $this->userService = $userService;
+    }
 
-        return $response->json();
-
-        $user = Auth::user();
-
-        $resource = new UserResource($user);
-        if ($user->isInfluencer()) {
-            return $resource;
-        }
-
-        return $resource->additional([
-            'data' => [
-                'permissions' => $user->permissions(),
-            ]
-        ]);
+    /**
+     * @return UserResource
+     */
+    public function user(): UserResource
+    {
+        return new UserResource($this->userService->getUser());
     }
 }

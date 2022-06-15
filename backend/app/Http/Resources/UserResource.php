@@ -15,18 +15,22 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $data = [
             'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            $this->mergeWhen(Auth::user() && Auth::user()->isAdmin(), [
-                'role' => $this->role,
-            ]),
-            $this->mergeWhen(Auth::user() && Auth::user()->isInfluencer(), [
-                'revenue' => $this->revenue,
-            ]),
-
         ];
+
+        if ($this->isInfluencer()) {
+            $data['revenue'] = $this->revenue;
+        }
+
+        if ($this->isAdmin()) {
+            $data['permissions'] = $this->permissions();
+            $data['role'] = $this->role;
+        }
+
+        return $data;
     }
 }

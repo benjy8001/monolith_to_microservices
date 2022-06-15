@@ -3,7 +3,7 @@ import Wrapper from "../Wrapper";
 import axios from "axios";
 import {Role} from "../../classes/Role";
 import {Navigate} from "react-router-dom";
-import constants from "../../../../react-influencer/src/constants";
+import constants from "../../constants";
 
 class UserCreate extends Component<any, any> {
     private first_name: string;

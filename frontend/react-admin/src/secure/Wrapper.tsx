@@ -6,7 +6,7 @@ import {Navigate} from "react-router-dom";
 import {connect} from "react-redux";
 import {User} from "../classes/User";
 import {mapDispatchToProps, mapStateToProps} from "../redux/mapUser";
-import constants from "../../../react-influencer/src/constants";
+import constants from "../constants";
 
 class Wrapper extends Component<PropsWithChildren<any>, any> {
     constructor(props: any) {

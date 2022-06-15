@@ -7,7 +7,9 @@ import axios from "axios";
 import configureStore from "./redux/configureStore";
 import {Provider} from "react-redux";
 
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'https://frontend-admin.micro.test/';
 
 const store = configureStore();
 
