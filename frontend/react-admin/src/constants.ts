@@ -1,12 +1,10 @@
 const dev = {
     BASE_URL: 'https://backend.micro.test/api',
-    USERS_URL: 'https://backend-users.micro.test/api',
-    CHECKOUT_URL: 'https://frontend-influencer.micro.test'
+    USERS_URL: 'https://backend-users.micro.test/api'
 }
 const prod = {
     BASE_URL: '',
-    USERS_URL: '',
-    CHECKOUT_URL: ''
+    USERS_URL: ''
 }
 
 export default {

@@ -8,7 +8,6 @@ import configureStore from "./redux/configureStore";
 import {Provider} from "react-redux";
 import constants from "./constants";
 
-axios.defaults.baseURL = constants.BASE_URL;
 axios.defaults.withCredentials = true;
 
 const store = configureStore();

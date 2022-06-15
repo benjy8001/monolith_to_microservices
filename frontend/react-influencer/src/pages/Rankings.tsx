@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Wrapper from "./Wrapper";
 import axios from "axios";
+import constants from "../constants";
 
 const Rankings = () => {
     const [rankingsData, setRankingsData] = useState([]);
@@ -8,7 +9,7 @@ const Rankings = () => {
     useEffect(() => {
         (
             async () => {
-                const response = await axios.get('rankings');
+                const response = await axios.get(`${constants.BASE_URL}/rankings`);
                 const obj = Object.entries(response.data).map(([name, revenue]) => ({name, revenue}));
                 // @ts-ignore
                 setRankingsData(obj);

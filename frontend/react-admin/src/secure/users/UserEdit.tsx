@@ -4,6 +4,7 @@ import axios from "axios";
 import {Role} from "../../classes/Role";
 import {User} from "../../classes/User";
 import {Navigate, useParams} from 'react-router-dom';
+import constants from "../../../../react-influencer/src/constants";
 
 class UserEdit extends Component<{ params: any }, any> {
     private id: number;
@@ -32,8 +33,8 @@ class UserEdit extends Component<{ params: any }, any> {
 
     componentDidMount = async () => {
         this.id = this.props.params.id;
-        const rolesCall = await axios.get(`roles`);
-        const userCall = await axios.get(`users/${this.id}`);
+        const rolesCall = await axios.get(`${constants.BASE_URL}/roles`);
+        const userCall = await axios.get(`${constants.BASE_URL}/users/${this.id}`);
         const user: User = userCall.data.data;
 
         this.setState({
@@ -48,7 +49,7 @@ class UserEdit extends Component<{ params: any }, any> {
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await axios.put(`users/${this.id}`, {
+        await axios.put(`${constants.BASE_URL}/users/${this.id}`, {
             first_name: this.first_name,
             last_name: this.last_name,
             email: this.email,

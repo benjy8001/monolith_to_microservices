@@ -4,6 +4,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import {Role} from "../../classes/Role";
 import Deleter from "../components/Deleter";
+import constants from "../../constants";
 
 class Roles extends Component<any, any> {
     constructor(props: any) {
@@ -15,7 +16,7 @@ class Roles extends Component<any, any> {
     }
 
     componentDidMount = async () => {
-        const rolesCall = await axios.get(`roles`);
+        const rolesCall = await axios.get(`${constants.BASE_URL}/roles`);
         this.setState({
             roles: rolesCall.data.data,
         });

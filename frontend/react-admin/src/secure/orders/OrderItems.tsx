@@ -4,6 +4,7 @@ import axios from "axios";
 import {Link, useParams} from "react-router-dom";
 import {Order} from "../../classes/Order";
 import {OrderItem} from "../../classes/OrderItem";
+import constants from "../../constants";
 
 class OrderItems extends Component<any, any> {
     private id: number;
@@ -19,7 +20,7 @@ class OrderItems extends Component<any, any> {
 
     componentDidMount = async () => {
         this.id = this.props.params.id;
-        const orderCall = await axios.get(`orders/${this.id}`);
+        const orderCall = await axios.get(`${constants.BASE_URL}/orders/${this.id}`);
         const order: Order = orderCall.data.data;
         this.setState({
             order_items: order.order_items,

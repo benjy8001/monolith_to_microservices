@@ -8,6 +8,7 @@ import Deleter from "../components/Deleter";
 import {connect} from "react-redux";
 import {mapStateToProps} from "../../redux/mapUser";
 import {User} from "../../classes/User";
+import constants from "../../constants";
 
 class Products extends Component<{ user: User }, any> {
     private page: number;
@@ -24,7 +25,7 @@ class Products extends Component<{ user: User }, any> {
     }
 
     componentDidMount = async () => {
-        const productsCall = await axios.get(`products?page=${this.page}`);
+        const productsCall = await axios.get(`${constants.BASE_URL}/products?page=${this.page}`);
         this.setState({
             products: productsCall.data.data,
         });

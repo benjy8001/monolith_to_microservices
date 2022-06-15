@@ -3,6 +3,7 @@ import Wrapper from "../Wrapper";
 import axios from "axios";
 import {Permission} from "../../classes/Permission";
 import {Navigate} from "react-router-dom";
+import constants from "../../constants";
 
 class RoleCreate extends Component<any, any> {
     private selected: number[];
@@ -21,7 +22,7 @@ class RoleCreate extends Component<any, any> {
     }
 
     componentDidMount = async () => {
-        const response = await axios.get(`permissions`);
+        const response = await axios.get(`${constants.BASE_URL}/permissions`);
         this.setState({
             permissions: response.data.data
         });
@@ -38,7 +39,7 @@ class RoleCreate extends Component<any, any> {
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await axios.post(`roles`, {
+        await axios.post(`${constants.BASE_URL}/roles`, {
             name: this.name,
             permissions: this.selected,
         });

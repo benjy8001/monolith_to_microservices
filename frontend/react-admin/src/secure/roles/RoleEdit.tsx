@@ -4,6 +4,7 @@ import axios from "axios";
 import {Permission} from "../../classes/Permission";
 import {Navigate, useParams} from "react-router-dom";
 import {Role} from "../../classes/Role";
+import constants from "../../constants";
 
 class RoleEdit extends Component<any, any> {
     private selected: number[];
@@ -27,11 +28,11 @@ class RoleEdit extends Component<any, any> {
 
     componentDidMount = async () => {
         this.id = this.props.params.id;
-        const roleCall = await axios.get(`roles/${this.id}`);
+        const roleCall = await axios.get(`${constants.BASE_URL}/roles/${this.id}`);
         const role: Role = roleCall.data.data;
         this.selected = role.permissions.map((p: Permission) => p.id);
 
-        const permissionsCall = await axios.get(`permissions`);
+        const permissionsCall = await axios.get(`${constants.BASE_URL}/permissions`);
         this.setState({
             permissions: permissionsCall.data.data,
             name: role.name,
@@ -54,7 +55,7 @@ class RoleEdit extends Component<any, any> {
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await axios.put(`roles/${this.id}`, {
+        await axios.put(`${constants.BASE_URL}/roles/${this.id}`, {
             name: this.name,
             permissions: this.selected,
         });

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Wrapper from "../Wrapper";
 import c3 from 'c3';
 import axios from "axios";
+import constants from "../../constants";
 
 class Dashboard extends Component<any, any> {
     componentDidMount = async () => {
@@ -27,7 +28,7 @@ class Dashboard extends Component<any, any> {
             }
         });
 
-        const response = await axios.get(`chart`);
+        const response = await axios.get(`${constants.BASE_URL}/chart`);
         const chartData: {date: string, sum: number}[] = response.data.data;
 
         chart.load({

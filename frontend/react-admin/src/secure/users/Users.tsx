@@ -7,6 +7,7 @@ import Paginator from "../components/Paginator";
 import Deleter from "../components/Deleter";
 import {connect} from "react-redux";
 import {mapStateToProps} from "../../redux/mapUser";
+import constants from "../../constants";
 
 class Users extends Component<{ user: User }, any> {
     private page: number;
@@ -23,7 +24,7 @@ class Users extends Component<{ user: User }, any> {
     }
 
     componentDidMount = async () => {
-        const response = await axios.get(`users?page=${this.page}`);
+        const response = await axios.get(`${constants.BASE_URL}/users?page=${this.page}`);
         this.setState({
             users: response.data.data
         });

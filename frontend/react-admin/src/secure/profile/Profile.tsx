@@ -4,6 +4,7 @@ import axios from "axios";
 import {User} from "../../classes/User";
 import {connect} from "react-redux";
 import {mapDispatchToProps, mapStateToProps} from "../../redux/mapUser";
+import constants from "../../constants";
 
 class Profile extends Component<any, any> {
     private first_name: string;
@@ -31,7 +32,7 @@ class Profile extends Component<any, any> {
     updateInfo = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        const response = await axios.put(`users/info`, {
+        const response = await axios.put(`${constants.BASE_URL}/users/info`, {
             first_name: this.first_name,
             last_name: this.last_name,
             email: this.email,
@@ -51,7 +52,7 @@ class Profile extends Component<any, any> {
     updatePassword = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await axios.put(`users/password`, {
+        await axios.put(`${constants.USERS_URL}/users/password`, {
             password: this.password,
             password_confirm: this.password_confirm,
         });

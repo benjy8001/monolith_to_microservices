@@ -4,6 +4,7 @@ import {Navigate, useParams} from "react-router-dom";
 import axios from "axios";
 import ImageUpload from "../components/ImageUpload";
 import {Product} from "../../classes/Product";
+import constants from "../../constants";
 
 class ProductEdit extends Component<any, any> {
     private id: number;
@@ -25,7 +26,7 @@ class ProductEdit extends Component<any, any> {
     componentDidMount = async () => {
         //this.id = this.props.match.params.id;
         this.id = this.props.params.id;
-        const productCall = await axios.get(`products/${this.id}`);
+        const productCall = await axios.get(`${constants.BASE_URL}/products/${this.id}`);
         const product: Product = productCall.data.data;
         this.setState({
             title: product.title,
@@ -38,7 +39,7 @@ class ProductEdit extends Component<any, any> {
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await axios.put(`products/${this.id}`, {
+        await axios.put(`${constants.BASE_URL}/products/${this.id}`, {
             title: this.state.title,
             description: this.state.description,
             image: this.state.image,

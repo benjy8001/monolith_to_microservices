@@ -58,7 +58,7 @@ Accept: application/json
 email=jane.doe@example.com&password=password&scope=influencer
 
 ###
-POST https://backend.micro.test/api/register
+POST https://backend-users.micro.test/api/register
 Content-Type: application/x-www-form-urlencoded
 Accept: application/json
 

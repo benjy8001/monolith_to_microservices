@@ -18,7 +18,7 @@ const Main = () => {
     useEffect(() => {
         (
             async () => {
-                const response = await axios.get(`products?s=${searchText}`);
+                const response = await axios.get(`${constants.BASE_URL}/products?s=${searchText}`);
                 setProducts(response.data.data);
             }
         )();

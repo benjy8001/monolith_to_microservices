@@ -9,7 +9,7 @@ const Stats = () => {
     useEffect(() => {
         (
             async () => {
-                const response = await axios.get('stats');
+                const response = await axios.get(`${constants.BASE_URL}/stats`);
                 //const obj = Object.entries(response.data).map(([name, revenue]) => ({name, revenue}));
                 // @ts-ignore
                 setStats(response.data);

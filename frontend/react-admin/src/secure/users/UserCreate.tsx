@@ -3,6 +3,7 @@ import Wrapper from "../Wrapper";
 import axios from "axios";
 import {Role} from "../../classes/Role";
 import {Navigate} from "react-router-dom";
+import constants from "../../../../react-influencer/src/constants";
 
 class UserCreate extends Component<any, any> {
     private first_name: string;
@@ -24,7 +25,7 @@ class UserCreate extends Component<any, any> {
     }
 
     componentDidMount = async () => {
-        const response = await axios.get(`roles`);
+        const response = await axios.get(`${constants.BASE_URL}/roles`);
         this.setState({
             roles: response.data.data
         });
@@ -33,7 +34,7 @@ class UserCreate extends Component<any, any> {
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await axios.post('users', {
+        await axios.post(`${constants.USERS_URL}/users`, {
             first_name: this.first_name,
             last_name: this.last_name,
             email: this.email,

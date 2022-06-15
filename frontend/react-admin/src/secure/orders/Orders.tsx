@@ -4,6 +4,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import {Order} from "../../classes/Order";
 import Paginator from "../components/Paginator";
+import constants from "../../constants";
 
 class Orders extends Component<any, any> {
     private page: number;
@@ -20,7 +21,7 @@ class Orders extends Component<any, any> {
     }
 
     componentDidMount = async () => {
-        const ordersCall = await axios.get(`orders?page=${this.page}`);
+        const ordersCall = await axios.get(`${constants.BASE_URL}/orders?page=${this.page}`);
         this.setState({
             orders: ordersCall.data.data,
         });
@@ -33,7 +34,7 @@ class Orders extends Component<any, any> {
     }
 
     handlerExport = async () => {
-        const reponse = await axios.get(`export`, {responseType: 'blob'});
+        const reponse = await axios.get(`${constants.BASE_URL}/export`, {responseType: 'blob'});
         //const blob = new Blob([reponse.data], {type: 'text/csv'});
         const downloadUrl = window.URL.createObjectURL(reponse.data);
         const link = document.createElement('a');
