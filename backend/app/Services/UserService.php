@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
 
@@ -20,9 +21,8 @@ class UserService
      */
     public function getUser(): User
     {
-        $response = Http::withHeaders($this->headers())->get(sprintf('%s/%s', $this->endpoint, 'user'));
+        $json = Http::withHeaders($this->headers())->get(sprintf('%s/%s', $this->endpoint, 'user'))->json();
 
-        $json = $response->json();
         $user = new User();
         $user->id = $json['id'];
         $user->first_name = $json['first_name'];
@@ -32,6 +32,22 @@ class UserService
         $user->email = $json['email'];
 
         return $user;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return Http::withHeaders($this->headers())->get(sprintf('%s/%s', $this->endpoint, 'admin'))->successful();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInfluencer(): bool
+    {
+        return Http::withHeaders($this->headers())->get(sprintf('%s/%s', $this->endpoint, 'influencer'))->successful();
     }
 
     /**

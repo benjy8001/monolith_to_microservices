@@ -21,4 +21,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('users/info', [AuthController::class, 'updateInfo']);
     Route::put('users/password', [AuthController::class, 'updatePassword']);
     Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::get('admin', [AuthController::class, 'authenticated'])->middleware('scope:admin');
+    Route::get('influencer', [AuthController::class, 'authenticated'])->middleware('scope:influencer');
 });

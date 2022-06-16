@@ -31,7 +31,7 @@ Route::get('user', [AuthController::class, 'user']);
 // Admin
 Route::prefix('admin')->group(function () {
 
-    Route::middleware(['auth:api', 'scope:admin'])->group(function () {
+    Route::middleware(['scope.admin'])->group(function () {
         Route::get('user', [AuthController::class, 'user']);
 
         Route::get('chart', [DashboardController::class, 'chart']);
@@ -50,7 +50,7 @@ Route::prefix('admin')->group(function () {
 Route::prefix('influencer')->group(function () {
     Route::get('products', [InfluencerProductController::class, 'index']);
 
-    Route::middleware(['auth:api', 'scope:influencer'])->group(function () {
+    Route::middleware(['scope.influencer'])->group(function () {
         Route::get('user', [AuthController::class, 'user']);
 
         Route::post('links', [LinkController::class, 'store']);

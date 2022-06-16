@@ -1,5 +1,5 @@
 const dev = {
-    BASE_URL: 'https://backend.micro.test/api',
+    BASE_URL: 'https://backend.micro.test/api/admin',
     USERS_URL: 'https://backend-users.micro.test/api'
 }
 const prod = {

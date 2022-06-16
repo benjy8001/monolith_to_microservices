@@ -16,7 +16,7 @@ class DashboardController
      */
     public function chart(): AnonymousResourceCollection
     {
-        Gate::authorize('view', 'orders');
+        //Gate::authorize('view', 'orders');
 
         return ChartResource::collection(Order::query()
             ->join('order_items', 'orders.id', '=', 'order_items.order_id')

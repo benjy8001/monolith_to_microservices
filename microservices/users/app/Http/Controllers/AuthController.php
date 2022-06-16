@@ -102,4 +102,9 @@ class AuthController
 
         return response($user, Response::HTTP_ACCEPTED);
     }
+
+    public function authenticated()
+    {
+        return 1;
+    }
 }
