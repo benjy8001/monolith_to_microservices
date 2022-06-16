@@ -52,7 +52,7 @@ class UserController
     {
         $this->userService->allows('view', 'users');
 
-        return new UserResource(User::find($id));
+        return new UserResource($this->userService->get($id));
     }
 
     /**
@@ -65,10 +65,10 @@ class UserController
     {
         $this->userService->allows('edit', 'users');
 
-        $user = User::create(
-            $request->only('first_name', 'last_name', 'email') +
-            ['password' => Hash::make(self::DEFAULT_PASSWORD)]
-        );
+        $data = $request->only('first_name', 'last_name', 'email') +
+            ['password' => self::DEFAULT_PASSWORD];
+        $user = $this->userService->create($data);
+
 
         UserRole::create([
             'user_id' => $user->id,
@@ -91,8 +91,7 @@ class UserController
     {
         $this->userService->allows('edit', 'users');
 
-        $user = User::find($id);
-        $user->update($request->only('first_name', 'last_name', 'email'));
+        $user = $this->userService->update($id, $request->only('first_name', 'last_name', 'email'));
 
         UserRole::where('user_id', $user->id)->delete();
         UserRole::create([
@@ -113,7 +112,7 @@ class UserController
     {
         $this->userService->allows('edit', 'users');
 
-        User::destroy($id);
+        $this->userService->delete($id);
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
