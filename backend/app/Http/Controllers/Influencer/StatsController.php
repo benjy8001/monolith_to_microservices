@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Influencer;
 
 use App\Models\Link;
 use App\Models\Order;
-use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 
 class StatsController

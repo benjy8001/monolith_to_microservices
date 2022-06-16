@@ -4,20 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PaginatedResource;
 use App\Models\User;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     /**
-     * @return AnonymousResourceCollection
-     * @throws AuthorizationException
+     * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request)
     {
+        if (-1 === $request->input('page')) {
+            return User::all();
+        }
         return PaginatedResource::collection(User::paginate());
     }
 
