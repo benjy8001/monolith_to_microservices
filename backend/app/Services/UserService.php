@@ -62,6 +62,15 @@ class UserService
     }
 
     /**
+     * @param int $page
+     * @return array
+     */
+    public function all(int $page): array
+    {
+        return Http::withHeaders($this->headers())->get(sprintf('%s/%s?page=%s', $this->endpoint, 'users', $page))->json();
+    }
+
+    /**
      * @return array
      */
     private function headers(): array

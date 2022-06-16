@@ -10,8 +10,8 @@ use App\Models\User;
 use App\Models\UserRole;
 use App\Services\UserService;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,14 +31,15 @@ class UserController
     }
 
     /**
-     * @return AnonymousResourceCollection
+     * @param Request $request
+     * @return array
      * @throws AuthorizationException
      */
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): array
     {
         $this->userService->allows('view', 'users');
 
-        return UserResource::collection(User::paginate());
+        return $this->userService->all($request->input('page', 1));
     }
 
     /**
