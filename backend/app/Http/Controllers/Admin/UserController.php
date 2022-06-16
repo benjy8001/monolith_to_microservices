@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Jobs\AdminAdded;
 use App\Models\User;
 use App\Models\UserRole;
+use App\Services\UserService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Gate;
@@ -18,6 +19,16 @@ class UserController
 {
     /** @var string */
     private const DEFAULT_PASSWORD = 'password';
+    private $userService;
+
+    /**
+     * AuthController constructor.
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
 
     /**
      * @return AnonymousResourceCollection
@@ -25,7 +36,7 @@ class UserController
      */
     public function index(): AnonymousResourceCollection
     {
-        Gate::authorize('view', 'users');
+        $this->userService->allows('view', 'users');
 
         return UserResource::collection(User::paginate());
     }
@@ -38,7 +49,7 @@ class UserController
      */
     public function show(int $id): UserResource
     {
-        Gate::authorize('view', 'users');
+        $this->userService->allows('view', 'users');
 
         return new UserResource(User::find($id));
     }
@@ -51,7 +62,7 @@ class UserController
      */
     public function store(UserCreateRequest $request): Response
     {
-        Gate::authorize('edit', 'users');
+        $this->userService->allows('edit', 'users');
 
         $user = User::create(
             $request->only('first_name', 'last_name', 'email') +
@@ -77,7 +88,7 @@ class UserController
      */
     public function update(UserUpdateRequest $request, int $id): Response
     {
-        Gate::authorize('edit', 'users');
+        $this->userService->allows('edit', 'users');
 
         $user = User::find($id);
         $user->update($request->only('first_name', 'last_name', 'email'));
@@ -99,7 +110,7 @@ class UserController
      */
     public function destroy(int $id): Response
     {
-        Gate::authorize('edit', 'users');
+        $this->userService->allows('edit', 'users');
 
         User::destroy($id);
 

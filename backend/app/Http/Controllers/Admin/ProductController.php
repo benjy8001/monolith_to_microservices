@@ -6,6 +6,7 @@ use App\Events\ProductUpdatedEvent;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use App\Services\UserService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -14,13 +15,24 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductController
 {
+    private $userService;
+
+    /**
+     * AuthController constructor.
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * @return AnonymousResourceCollection
      * @throws AuthorizationException
      */
     public function index(): AnonymousResourceCollection
     {
-        Gate::authorize('view', 'products');
+        $this->userService->allows('view', 'products');
 
         return ProductResource::collection(Product::paginate());
     }
@@ -33,7 +45,7 @@ class ProductController
      */
     public function store(ProductCreateRequest $request): Response
     {
-        Gate::authorize('edit', 'products');
+        $this->userService->allows('edit', 'products');
 
         $product = Product::create($request->only('title', 'description', 'image', 'price'));
 
@@ -50,7 +62,7 @@ class ProductController
      */
     public function show(int $id): ProductResource
     {
-        Gate::authorize('view', 'products');
+        $this->userService->allows('view', 'products');
 
         return new ProductResource(Product::find($id));
     }
@@ -64,7 +76,7 @@ class ProductController
      */
     public function update(Request $request, int $id): Response
     {
-        Gate::authorize('edit', 'products');
+        $this->userService->allows('edit', 'products');
 
         $product = Product::find($id);
         $product->update($request->only('title', 'description', 'image', 'price'));
@@ -82,7 +94,7 @@ class ProductController
      */
     public function destroy(int $id): Response
     {
-        Gate::authorize('edit', 'products');
+        $this->userService->allows('edit', 'products');
 
         Product::destroy($id);
 

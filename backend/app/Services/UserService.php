@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Http\Client\Response;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Http;
 
 class UserService
@@ -48,6 +48,17 @@ class UserService
     public function isInfluencer(): bool
     {
         return Http::withHeaders($this->headers())->get(sprintf('%s/%s', $this->endpoint, 'influencer'))->successful();
+    }
+
+    /**
+     * @param string $ability
+     * @param string $arguments
+     * @return Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function allows(string $ability, string $arguments): Response
+    {
+        return Gate::forUser($this->getUser())->authorize($ability, $arguments);
     }
 
     /**

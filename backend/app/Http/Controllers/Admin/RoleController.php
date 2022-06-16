@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
+use App\Services\UserService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -13,13 +14,24 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleController
 {
+    private $userService;
+
+    /**
+     * AuthController constructor.
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * @return AnonymousResourceCollection
      * @throws AuthorizationException
      */
     public function index(): AnonymousResourceCollection
     {
-        Gate::authorize('view', 'roles');
+        $this->userService->allows('view', 'roles');
 
         return RoleResource::collection(Role::all());
     }
@@ -32,7 +44,7 @@ class RoleController
      */
     public function store(Request $request): Response
     {
-        Gate::authorize('edit', 'roles');
+        $this->userService->allows('edit', 'roles');
 
         $role = Role::create($request->only('name'));
         if ($permissions = $request->input('permissions')) {
@@ -55,7 +67,7 @@ class RoleController
      */
     public function show(int $id): RoleResource
     {
-        Gate::authorize('view', 'roles');
+        $this->userService->allows('view', 'roles');
 
         return new RoleResource(Role::find($id));
     }
@@ -69,7 +81,7 @@ class RoleController
      */
     public function update(Request $request, int $id): Response
     {
-        Gate::authorize('edit', 'roles');
+        $this->userService->allows('edit', 'roles');
 
         $role = Role::find($id);
         $role->update($request->only('name'));
@@ -97,7 +109,7 @@ class RoleController
      */
     public function destroy(int $id): Response
     {
-        Gate::authorize('edit', 'roles');
+        $this->userService->allows('edit', 'roles');
 
         DB::table(Role::ROLE_PERMISSION_TABLE_NAME)->where('role_id', $id)->delete();
         Role::destroy($id);
