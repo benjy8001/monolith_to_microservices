@@ -6,13 +6,10 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Jobs\AdminAdded;
-use App\Models\User;
 use App\Models\UserRole;
 use App\Services\UserService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController
