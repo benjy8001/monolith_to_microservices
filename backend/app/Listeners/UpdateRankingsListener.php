@@ -22,6 +22,6 @@ class UpdateRankingsListener
         $userService = new UserService();
         $user = $userService->get($order->user_id);
 
-        Redis::zincrby('rankings', $revenue, $user->full_name);
+        Redis::zincrby('rankings', $revenue, $user->fullName());
     }
 }

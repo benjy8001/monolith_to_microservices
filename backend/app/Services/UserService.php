@@ -24,7 +24,7 @@ class UserService
     {
         $json = $this->request('get', sprintf('%s/%s', $this->endpoint, 'user'))->json();
 
-        return $this->parseUser($json);
+        return new User($json);
     }
 
     /**
@@ -71,7 +71,7 @@ class UserService
     {
         $json = $this->request('get', sprintf('%s/%s/%s', $this->endpoint, 'users', $id))->json();
 
-        return $this->parseUser($json);
+        return new User($json);
     }
 
     /**
@@ -82,7 +82,7 @@ class UserService
     {
         $json = $this->request('post', sprintf('%s/%s', $this->endpoint, 'users'), $data)->json();
 
-        return $this->parseUser($json);
+        return new User($json);
     }
 
     /**
@@ -94,7 +94,7 @@ class UserService
     {
         $json = $this->request('put', sprintf('%s/%s/%s', $this->endpoint, 'users', $id), $data)->json();
 
-        return $this->parseUser($json);
+        return new User($json);
     }
 
     /**
@@ -104,22 +104,6 @@ class UserService
     public function delete(int $id): bool
     {
         return $this->request('delete', sprintf('%s/%s/%s', $this->endpoint, 'users', $id))->successful();
-    }
-
-    /**
-     * @param array $json
-     * @return User
-     */
-    private function parseUser(array $json): User
-    {
-        $user = new User();
-        $user->id = $json['id'];
-        $user->first_name = $json['first_name'];
-        $user->last_name = $json['last_name'];
-        $user->email = $json['email'];
-        $user->is_influencer = $json['is_influencer'] ?? 0;
-
-        return $user;
     }
 
     /**

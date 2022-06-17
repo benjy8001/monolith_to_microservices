@@ -23,12 +23,12 @@ class UserResource extends JsonResource
         ];
 
         if ($this->isInfluencer()) {
-            $data['revenue'] = $this->revenue;
+            $data['revenue'] = $this->revenue();
         }
 
         if ($this->isAdmin()) {
             $data['permissions'] = $this->permissions();
-            $data['role'] = $this->role;
+            $data['role'] = $this->role();
         }
 
         return $data;
