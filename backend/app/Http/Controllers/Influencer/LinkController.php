@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 
 class LinkController
 {
+    private const RABBITMQ_CHECKOUT_QUEUE = 'checkout_queue';
     private $userService;
 
     /**
@@ -45,7 +46,7 @@ class LinkController
             $linkProducts[] = $linkProduct->toArray();
         }
 
-        LinkCreated::dispatch($link->toArray(), $linkProducts);
+        LinkCreated::dispatch($link->toArray(), $linkProducts)->onQueue(self::RABBITMQ_CHECKOUT_QUEUE);
 
         return new LinkResource($link);
     }

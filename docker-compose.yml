@@ -71,6 +71,26 @@ services:
                 max-size: "1M"
                 max-file: "5"
 
+    checkout-queue:
+        container_name: microservice_checkout_queue
+        build:
+            context: ./microservices/checkout
+            dockerfile: Dockerfile_queue
+        volumes:
+            - microservice_checkout_sources:/usr/src/app:rw
+        depends_on:
+            - checkout-db
+        links:
+            - checkout-db:db
+            - users:users_api
+        env_file:
+            - microservices/checkout/.env
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "1M"
+                max-file: "5"
+
     admin-frontend:
         container_name: admin_react
         build:

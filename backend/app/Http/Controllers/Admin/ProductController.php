@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductController
 {
+    private const RABBITMQ_CHECKOUT_QUEUE = 'checkout_queue';
     private $userService;
 
     /**
@@ -53,7 +54,7 @@ class ProductController
         $product = Product::create($request->only('title', 'description', 'image', 'price'));
 
         event(new ProductUpdatedEvent());
-        ProductCreated::dispatch($product->toArray());
+        ProductCreated::dispatch($product->toArray())->onQueue(self::RABBITMQ_CHECKOUT_QUEUE);
 
         return response(new ProductResource($product), Response::HTTP_CREATED);
     }
@@ -86,7 +87,7 @@ class ProductController
         $product->update($request->only('title', 'description', 'image', 'price'));
 
         event(new ProductUpdatedEvent());
-        ProductUpdated::dispatch($product->toArray());
+        ProductUpdated::dispatch($product->toArray())->onQueue(self::RABBITMQ_CHECKOUT_QUEUE);
 
         return response(new ProductResource($product), Response::HTTP_ACCEPTED);
     }
@@ -102,7 +103,7 @@ class ProductController
         $this->userService->allows('edit', 'products');
 
         Product::destroy($id);
-        ProductDeleted::dispatch($id);
+        ProductDeleted::dispatch($id)->onQueue(self::RABBITMQ_CHECKOUT_QUEUE);
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
