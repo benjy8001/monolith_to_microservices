@@ -10,6 +10,7 @@ use App\Models\Product;
 use Cartalyst\Stripe\Stripe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Microservices\UserService;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController
@@ -22,6 +23,7 @@ class OrderController
     public function store(Request $request)
     {
         $link = Link::whereCode($request->input('code'))->first();
+        $user = (new UserService())->get($link->user_id);
 
         DB::beginTransaction();
         $order = new Order();
@@ -29,8 +31,8 @@ class OrderController
         $order->last_name = $request->input('last_name');
         $order->email = $request->input('email');
         $order->code = $link->code;
-        $order->user_id = $link->user->id;
-        $order->influencer_email = $link->user->email;
+        $order->user_id = $user->id;
+        $order->influencer_email = $user->email;
         $order->address = $request->input('address');
         $order->address2 = $request->input('address2');
         $order->city = $request->input('city');

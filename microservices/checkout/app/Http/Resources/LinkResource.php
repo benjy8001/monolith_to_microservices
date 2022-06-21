@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Microservices\UserService;
 
 class LinkResource extends JsonResource
 {
@@ -17,7 +18,7 @@ class LinkResource extends JsonResource
         return [
             'id' => $this->id,
             'code' => $this->code,
-            'user' => $this->user_id, //new UserResource($this->user),
+            'user' => (new UserService())->get($this->user_id),
             'products' => ProductResource::collection($this->products),
         ];
     }
