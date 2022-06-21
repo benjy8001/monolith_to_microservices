@@ -19,6 +19,8 @@ class OrderItemFactory extends Factory
         return [
             'product_title' => $this->faker->text(30),
             'price' => $this->faker->numberBetween(10, 100),
+            'influencer_revenue' => $this->faker->numberBetween(10, 100),
+            'admin_revenue' => $this->faker->numberBetween(10, 100),
             'quantity' => $this->faker->numberBetween(1, 5),
         ];
     }
