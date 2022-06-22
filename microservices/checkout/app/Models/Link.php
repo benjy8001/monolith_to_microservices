@@ -30,7 +30,7 @@ class Link extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     /**
      * @return BelongsToMany
