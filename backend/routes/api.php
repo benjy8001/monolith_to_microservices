@@ -46,15 +46,3 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-// Influencer
-Route::prefix('influencer')->group(function () {
-    Route::get('products', [InfluencerProductController::class, 'index']);
-
-    Route::middleware(['scope.influencer'])->group(function () {
-        Route::get('user', [AuthController::class, 'user']);
-
-        Route::post('links', [LinkController::class, 'store']);
-        Route::get('stats', [StatsController::class, 'index']);
-        Route::get('rankings', [StatsController::class, 'rankings']);
-    });
-});

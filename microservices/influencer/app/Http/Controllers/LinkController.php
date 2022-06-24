@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Influencer;
+namespace App\Http\Controllers;
 
 use App\Http\Resources\LinkResource;
-use App\Jobs\LinkCreated;
+//use App\Jobs\LinkCreated;
 use App\Models\Link;
 use App\Models\LinkProduct;
-use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Microservices\UserService;
 
 class LinkController
 {
@@ -46,7 +46,7 @@ class LinkController
             $linkProducts[] = $linkProduct->toArray();
         }
 
-        LinkCreated::dispatch($link->toArray(), $linkProducts)->onQueue(self::RABBITMQ_CHECKOUT_QUEUE);
+        //LinkCreated::dispatch($link->toArray(), $linkProducts)->onQueue(self::RABBITMQ_CHECKOUT_QUEUE);
 
         return new LinkResource($link);
     }

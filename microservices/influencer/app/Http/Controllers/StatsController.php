@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Influencer;
+namespace App\Http\Controllers;
 
 use App\Models\Link;
 use App\Models\Order;
-use App\Services\UserService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Redis;
+use Microservices\UserService;
 
 class StatsController
 {

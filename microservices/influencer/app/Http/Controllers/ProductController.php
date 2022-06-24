@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Influencer;
+namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
