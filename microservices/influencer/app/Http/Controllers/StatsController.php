@@ -31,7 +31,7 @@ class StatsController
         $links = Link::where('user_id', $user->id)->get();
 
         return $links->map(function (Link $link) {
-            $orders = Order::where('code', $link->code)->where('complete', 1)->get();
+            $orders = Order::where('code', $link->code)->get();
 
             return [
                 'code' => $link->code,

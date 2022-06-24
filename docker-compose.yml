@@ -107,6 +107,7 @@ services:
             - VIRTUAL_PORT=80
         depends_on:
             - influencer-db
+            - redis
         links:
             - influencer-db:db
             - users:users_api
@@ -127,6 +128,7 @@ services:
             - microservice_influencer_sources:/usr/src/app:rw
         depends_on:
             - influencer-db
+            - redis
         links:
             - influencer-db:db
             - users:users_api

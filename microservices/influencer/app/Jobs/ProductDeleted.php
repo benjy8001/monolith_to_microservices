@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 
 class ProductDeleted implements ShouldQueue
 {
@@ -33,5 +34,7 @@ class ProductDeleted implements ShouldQueue
     public function handle()
     {
         Product::destroy($this->id);
+
+        Cache::forget('products');
     }
 }
