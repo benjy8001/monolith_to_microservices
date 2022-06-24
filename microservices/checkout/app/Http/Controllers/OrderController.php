@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OrderController
 {
+    private const INFLUENCER_QUEUE_NAME = 'influencer_queue';
+    private const EMAILS_QUEUE_NAME = 'emails_queue';
+
     /**
      * @param Request $request
      * @return mixed
@@ -94,7 +97,13 @@ class OrderController
         $order->complete = 1;
         $order->save();
 
-        OrderCompleted::dispatch($order->toArray());
+        $orderItems = [];
+        foreach ($order->orderItems as $item) {
+            $orderItems[] = $item->toArray();
+        }
+
+        OrderCompleted::dispatch($order->toArray(), $orderItems)->onQueue(self::INFLUENCER_QUEUE_NAME);
+        OrderCompleted::dispatch($order->toArray(), $orderItems)->onQueue(self::EMAILS_QUEUE_NAME);
 
         return response([
             'message' => 'success'

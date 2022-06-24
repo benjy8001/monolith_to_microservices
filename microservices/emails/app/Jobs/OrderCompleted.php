@@ -15,16 +15,18 @@ class OrderCompleted implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $data = [];
+    public $orderData = [];
+    public $orderItemsData = [];
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(array $data)
+    public function __construct(array $orderData, array $orderItemsData)
     {
-        $this->data = $data;
+        $this->orderData = $orderData;
+        $this->orderItemsData = $orderItemsData;
     }
 
     /**
@@ -35,16 +37,16 @@ class OrderCompleted implements ShouldQueue
     public function handle()
     {
         Mail::send('mails/influencer/influencer', [
-            'code' => $this->data['code'],
-            'influencer_total' => $this->data['influencer_total'],
+            'code' => $this->orderData['code'],
+            'influencer_total' => $this->orderData['influencer_total'],
         ], function (Message $message) {
-            $message->to($this->data['influencer_email']);
+            $message->to($this->orderData['influencer_email']);
             $message->subject('A new order has been completed!');
         });
 
         Mail::send('mails/influencer/admin', [
-            'id' => $this->data['id'],
-            'admin_total' => $this->data['admin_total'],
+            'id' => $this->orderData['id'],
+            'admin_total' => $this->orderData['admin_total'],
         ], function (Message $message) {
             $message->to('admin@admin.com');
             $message->subject('A new order has been completed!');
