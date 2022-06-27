@@ -140,6 +140,55 @@ services:
                 max-size: "1M"
                 max-file: "5"
 
+    admin:
+      container_name: microservice_admin
+      build:
+        context: ./microservices/admin
+        dockerfile: Dockerfile
+      volumes:
+        - microservice_admin_sources:/var/www:rw
+        - ./microservices/admin/docker/vhost.d:/etc/apache2/sites-enabled
+      environment:
+        - XDEBUG_CONFIG=remote_host=172.0.0.1 remote_enable=on
+        - APP_XDEBUG=enabled
+        - COMPOSER_AUTH=${COMPOSER_AUTH}
+        - VIRTUAL_HOST=backend-admin.micro.test
+        - VIRTUAL_PORT=80
+      depends_on:
+        - admin-db
+        - redis
+      links:
+        - admin-db:db
+        - users:users_api
+      env_file:
+        - microservices/admin/.env
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "1M"
+          max-file: "5"
+
+    admin-queue:
+      container_name: microservice_admin_queue
+      build:
+        context: ./microservices/admin
+        dockerfile: Dockerfile_queue
+      volumes:
+        - microservice_admin_sources:/usr/src/app:rw
+      depends_on:
+        - admin-db
+        - redis
+      links:
+        - admin-db:db
+        - users:users_api
+      env_file:
+        - microservices/admin/.env
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "1M"
+          max-file: "5"
+
     admin-frontend:
         container_name: admin_react
         build:
@@ -249,7 +298,7 @@ services:
                 max-file: "5"
 
     db:
-        container_name: admin_db
+        container_name: main_db
         image: mysql:8
         command: [mysqld, --default-authentication-plugin=mysql_native_password]
         volumes:
@@ -304,6 +353,20 @@ services:
         ports:
             - "33068:3306"
 
+    admin-db:
+      container_name: admin_db
+      image: mysql:8
+      command: [mysqld, --default-authentication-plugin=mysql_native_password]
+      volumes:
+        - admin_database:/var/lib/mysql:rw
+      environment:
+        MYSQL_ROOT_PASSWORD: "toor"
+        MYSQL_USER: "microservices"
+        MYSQL_PASSWORD: "monolith"
+        MYSQL_DATABASE: "admin"
+      ports:
+        - "33069:3306"
+
     redis:
         container_name: redis_cache
         image: redis:latest
@@ -323,6 +386,7 @@ volumes:
     users_database: ~
     checkout_database: ~
     influencer_database: ~
+    admin_database: ~
     frontend_admin_sources:
         driver: local
         driver_opts:
@@ -371,6 +435,12 @@ volumes:
             o: bind
             type: none
             device: $PWD/microservices/influencer
+    microservice_admin_sources:
+      driver: local
+      driver_opts:
+        o: bind
+        type: none
+        device: $PWD/microservices/admin
 
 networks:
     default:
