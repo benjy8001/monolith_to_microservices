@@ -4,8 +4,44 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eed13c45b7ca9540bc16b7814f22465a",
+    "content-hash": "6d45f05a1d157f41d09dea8358547af1",
     "packages": [
+        {
+            "name": "benjy8001/microservices-common",
+            "version": "0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/benjy8001/microservices-common.git",
+                "reference": "12f843a5003429cc9978cd428a5284599d857732"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/benjy8001/microservices-common/zipball/12f843a5003429cc9978cd428a5284599d857732",
+                "reference": "12f843a5003429cc9978cd428a5284599d857732",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^9.11",
+                "php": "^8.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Mabille",
+                    "email": "benjy80@gmail.com"
+                }
+            ],
+            "description": "This is a package for the Microservices testing",
+            "support": {
+                "issues": "https://github.com/benjy8001/microservices-common/issues",
+                "source": "https://github.com/benjy8001/microservices-common/tree/0.0.2"
+            },
+            "time": "2022-06-21T07:27:08+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.9.3",
@@ -8361,5 +8397,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
