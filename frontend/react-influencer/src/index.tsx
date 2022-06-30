@@ -8,8 +8,8 @@ import configureStore from "./redux/configureStore";
 import {Provider} from "react-redux";
 import constants from "./constants";
 
-axios.defaults.withCredentials = true;
-
+//axios.defaults.withCredentials = true;
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'https://frontend-influencer.micro.test/';
 
 const store = configureStore();

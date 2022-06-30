@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\LinkResource;
-//use App\Jobs\LinkCreated;
+use App\Jobs\LinkCreated;
 use App\Models\Link;
 use App\Models\LinkProduct;
 use Illuminate\Http\Request;
@@ -46,7 +46,7 @@ class LinkController
             $linkProducts[] = $linkProduct->toArray();
         }
 
-        //LinkCreated::dispatch($link->toArray(), $linkProducts)->onQueue(self::RABBITMQ_CHECKOUT_QUEUE);
+        LinkCreated::dispatch($link->toArray(), $linkProducts)->onQueue(self::RABBITMQ_CHECKOUT_QUEUE);
 
         return new LinkResource($link);
     }

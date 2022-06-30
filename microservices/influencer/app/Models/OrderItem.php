@@ -39,6 +39,8 @@ class OrderItem extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     /**
      * @return BelongsTo
      */

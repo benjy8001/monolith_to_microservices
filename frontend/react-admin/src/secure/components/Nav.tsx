@@ -3,6 +3,7 @@ import axios from "axios";
 import {Link, Navigate} from 'react-router-dom';
 import {connect} from "react-redux";
 import {mapStateToProps} from "../../redux/mapUser";
+import constants from "../../constants";
 
 class Nav extends Component<any, any> {
     constructor(props: any) {
@@ -14,7 +15,7 @@ class Nav extends Component<any, any> {
     }
 
     handleClick = async () => {
-        await axios.post('logout', {});
+        await axios.post(`${constants.USERS_URL}/logout`, {});
         localStorage.clear();
         axios.defaults.headers.common['Authorization'] = '';
         this.setState({

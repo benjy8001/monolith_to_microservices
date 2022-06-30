@@ -57,6 +57,8 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     /**
      * @return HasMany
      */

@@ -1,7 +1,7 @@
 const dev = {
     BASE_URL: 'https://backend-influencer.micro.test/api',
     USERS_URL: 'https://backend-users.micro.test/api',
-    CHECKOUT_URL: 'https://frontend-influencer.micro.test'
+    CHECKOUT_URL: 'https://frontend-checkout.micro.test'
 }
 const prod = {
     BASE_URL: '',
