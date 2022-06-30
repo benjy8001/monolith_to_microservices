@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class OrderController
 {
     private const INFLUENCER_QUEUE_NAME = 'influencer_queue';
+    private const ADMIN_QUEUE_NAME = 'admin_queue';
     private const EMAILS_QUEUE_NAME = 'emails_queue';
 
     /**
@@ -103,6 +104,7 @@ class OrderController
         }
 
         OrderCompleted::dispatch($order->toArray(), $orderItems)->onQueue(self::INFLUENCER_QUEUE_NAME);
+        OrderCompleted::dispatch($order->toArray(), $orderItems)->onQueue(self::ADMIN_QUEUE_NAME);
         OrderCompleted::dispatch($order->toArray(), $orderItems)->onQueue(self::EMAILS_QUEUE_NAME);
 
         return response([
