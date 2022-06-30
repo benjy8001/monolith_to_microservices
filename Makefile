@@ -143,6 +143,7 @@ ifeq ("$(wildcard ${NGINX_PROXY_DIRECTORY}/docker/certs/backend.micro.test.crt)"
 	nginx_proxy_ssl gen backend-users.micro.test
 	nginx_proxy_ssl gen backend-checkout.micro.test
 	nginx_proxy_ssl gen backend-influencer.micro.test
+	nginx_proxy_ssl gen backend-admin.micro.test
 	nginx_proxy_ssl gen mailer.micro.test
 	nginx_proxy restart
 else

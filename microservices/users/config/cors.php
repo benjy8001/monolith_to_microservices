@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://frontend-admin.micro.test', 'admin_api'],
+    'allowed_origins' => ['https://frontend-admin.micro.test', 'admin_api', 'https://frontend-influencer.micro.test'],
 
     'allowed_origins_patterns' => [],
 

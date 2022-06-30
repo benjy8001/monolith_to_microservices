@@ -28,7 +28,7 @@ const Home = () => {
         if (undefined !== code) {
             (
                 async () => {
-                    const response = await axios.get(`${constants.BASE_URL}links/${code}`);
+                    const response = await axios.get(`${constants.BASE_URL}/links/${code}`);
                     const data = response.data.data;
 
                     setUser(data.user);
@@ -87,7 +87,7 @@ const Home = () => {
             code: code,
             items: quantities
         });
-        const response = await axios.post(`${constants.BASE_URL}orders`, {
+        const response = await axios.post(`${constants.BASE_URL}/orders`, {
             first_name: firstName,
             last_name: lastName,
             email: email,

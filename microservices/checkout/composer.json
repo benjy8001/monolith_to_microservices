@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "benjy8001/microservices-common": "^0.0.2",
+        "benjy8001/microservices-common": "^0.0.4",
         "cartalyst/stripe": "^2.4",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.11",

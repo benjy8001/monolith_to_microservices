@@ -10,6 +10,8 @@ import constants from "./constants";
 
 axios.defaults.withCredentials = true;
 
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'https://frontend-influencer.micro.test/';
+
 const store = configureStore();
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -2,8 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Role;
+use App\Models\UserRole;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 
 class UserResource extends JsonResource
 {
@@ -15,13 +16,16 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $userRole = UserRole::where('user_id', $this->id)->first();
+        $role = Role::find($userRole->role_id);
+
         return [
             'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'permissions' => $this->permissions(),
-            'role' => $this->role(),
+            'permissions' => $role->permissions->pluck('name'),
+            'role' => $role,
         ];
     }
 }

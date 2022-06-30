@@ -1,5 +1,5 @@
 const dev = {
-    BASE_URL: 'https://backend.micro.test/api/checkout/',
+    BASE_URL: 'https://backend-checkout.micro.test/api',
     STRIPE_KEY: 'pk_test_51L81x7FiM03bCHKbWAXvkeGsuZc0vK0VfXZSbt9FL7ADpBOlGzRLnu2RqTxlV55IzJD7eBKO2Xzc3krA2tJsT8f500Y5knydPZ',
 }
 const prod = {

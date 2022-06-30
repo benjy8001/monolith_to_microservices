@@ -1,5 +1,5 @@
 const dev = {
-    BASE_URL: 'https://backend.micro.test/api',
+    BASE_URL: 'https://backend-influencer.micro.test/api',
     USERS_URL: 'https://backend-users.micro.test/api',
     CHECKOUT_URL: 'https://frontend-influencer.micro.test'
 }

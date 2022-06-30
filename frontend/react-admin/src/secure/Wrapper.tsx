@@ -30,6 +30,7 @@ class Wrapper extends Component<PropsWithChildren<any>, any> {
                 user.permissions
             ));
         } catch (e) {
+            console.log(e);
             this.setState({
                 redirect: true
             });

@@ -36,7 +36,7 @@ const Main = () => {
 
     const generate = async () => {
         try {
-            const response = await axios.post('links', {
+            const response = await axios.post(`${constants.BASE_URL}/links`, {
                 products: selected
             });
 

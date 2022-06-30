@@ -12,7 +12,7 @@ const Success = () => {
         if (undefined !== source) {
             (
                 async () => {
-                    await axios.post(`${constants.BASE_URL}orders/confirm`, {
+                    await axios.post(`${constants.BASE_URL}/orders/confirm`, {
                         source: source
                     });
                 }

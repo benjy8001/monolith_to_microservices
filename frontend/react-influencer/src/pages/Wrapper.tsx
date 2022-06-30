@@ -11,8 +11,8 @@ const Wrapper = (props: PropsWithChildren<any>) => {
     useEffect(() => {
         try {
             (async () => {
-                const response = await axios.get(`${constants.BASE_URL}/user`);
-                const user: User = response.data.data;
+                const response = await axios.get(`${constants.USERS_URL}/user`);
+                const user: User = response.data;
                 props.setUser(new User(
                     user.id,
                     user.first_name,
@@ -22,6 +22,7 @@ const Wrapper = (props: PropsWithChildren<any>) => {
                 ));
             })();
         } catch (e) {
+            console.log(e);
             props.setUser(null);
         }
     }, []);
